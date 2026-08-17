@@ -349,7 +349,7 @@ function navigate(route){
   for(var j=0;j<items.length;j++) items[j].classList.toggle('active',items[j].dataset.route===route);
   render[route]();
   try{history.replaceState(null,'','#'+route);}catch(e){}
-  var main=document.getElementById('main'); if(main) main.scrollTo(0,0);
+  var main=document.getElementById('main'); if(main) main.scrollTop=0;
 }
 
 /* ---------- 渲染：各页面 ---------- */
@@ -482,6 +482,7 @@ render.todos=function(){
 
 /* 4. 记账（增强：统计看板 + 分类/APP/红包维度） */
 render.accounting=function(){
+  var today=todayStr();
   var list=D.accounting().slice().reverse();
   var mo=nowMonth();
   var inc=0,exp=0;
@@ -615,6 +616,7 @@ render.favorites=function(){
 
 /* 7. 运动饮食（原运动减肥，重命名为运动饮食） */
 render.fitness=function(){
+  var today=todayStr();
   var list=D.fitness();
   var h=head('🏋️','运动饮食','三分化训练 + 饮食方案 + 打卡');
 
@@ -789,6 +791,7 @@ function loadPickFeed(tabKey){
   tryNext();
 }
 render.picks=function(){
+  var today=todayStr();
   var list=D.picks().slice().reverse();
   var h=head('✨','每日精选','动态资讯 + 手动收藏');
   var tabs='<div class="page-tabs" id="pick-tabs">';
@@ -864,6 +867,7 @@ function addWeight(){var w=parseFloat(g('weight-input').value);var date=g('weigh
 function addTrain(){var day=g('train-day').value;var date=g('train-date').value||todayStr();var names={'A':'推（胸肩三头）','B':'拉（背二头）','C':'腿（股四腘绳核心）'};var a=D.fitness();a.push({id:uid(),kind:'train',date:date,day:day,name:names[day],done:true});save(K.fitness,a);render.fitness();}
 function delFit(id){var a=D.fitness().filter(function(f){return f.id!==id;});save(K.fitness,a);render.fitness();}
 function addPick(){var ty=g('pick-type').value;var t=g('pick-title').value.trim();var n=g('pick-note').value.trim();var date=g('pick-date').value||todayStr();if(!t){g('pick-title').focus();return;}var a=D.picks();a.push({id:uid(),type:ty,title:t,note:n,date:date});save(K.picks,a);render.picks();}
+function delPick(id){var a=D.picks().filter(function(p){return p.id!==id;});save(K.picks,a);render.picks();}
 
 function exportJSON(){
   var data={version:VER,exportedAt:new Date().toISOString(),
@@ -938,7 +942,8 @@ document.addEventListener('click',function(e){
 document.addEventListener('click',function(e){
   var b=e.target.closest('#acc-seg button');
   if(!b) return;
-  document.querySelectorAll('#acc-seg button').forEach(function(x){x.classList.remove('on');});
+  var btns=document.querySelectorAll('#acc-seg button');
+  for(var ai=0;ai<btns.length;ai++){btns[ai].classList.remove('on');}
   b.classList.add('on'); accType=b.dataset.v;
 });
 // 文件导入
