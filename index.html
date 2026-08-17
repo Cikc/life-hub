@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<!-- 个人日常生活记录工作台 · 单文件 HTML · 纯 localStorage 本地存储 · 无后端 · PWA 兼容苹果手机
+     所有样式与脚本全部内联，无任何外部 CDN 依赖，下载即可本地打开运行。
+     图标全部使用 emoji；图表用 CSS div 手绘，不使用 SVG/外部图标库。 -->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<title>个人生活工作台</title>
+
+<!-- PWA / iOS 元数据：让苹果手机 Safari「添加到主屏幕」后全屏打开、去掉地址栏 -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="生活台">
+<meta name="theme-color" content="#C8896F">
+<meta name="application-name" content="生活台">
+<meta name="description" content="个人日常生活记录工作台：概览/随笔/待办/记账/学习/收藏/运动/精选/设置，本地存储，PWA 可添加到手机主屏幕。">
+
+<!-- manifest 与 apple-touch-icon 由脚本运行时用 Blob/canvas 生成注入，保持单文件 -->
+<style>
+/* ============ 设计变量：暖米温馨、低饱和、护眼 ============ */
+:root{
+  --bg:#F6F1EA;          /* 主背景 暖米 */
+  --surface:#FFFBF5;     /* 卡片底 */
+  --sidebar:#EFE6D9;     /* 侧边栏 暖米偏深 */
+  --sidebar-active:#E2D2BD;
+  --accent:#C8896F;      /* 主色 暖陶土 */
+  --accent-soft:#F0D9CC;
+  --text:#4A4039;        /* 正文 暖深灰棕 */
+  --muted:#8C7E72;       /* 次要文字 */
+  --border:#E7DECF;      /* 描边 */
+  --income:#5B8C5A;      /* 收入绿（国内习惯） */
+  --expense:#C8615A;     /* 支出红（国内习惯） */
+  --done:#5B8C5A;
+  --overdue:#C8615A;
+  --shadow:0 1px 3px rgba(120,90,60,.06),0 4px 16px rgba(120,90,60,.06);
+  --radius:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Roboto,sans-serif;
+  background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;
+  /* 苹果手机安全区 */
+  padding-bottom:env(safe-area-inset-bottom);
+}
+a{color:var(--accent);text-decoration:none}
+button{font-family:inherit}
+
+/* ============ 侧边栏（PC 与手机均为左侧固定） ============ */
+.sidebar{
+  position:fixed;left:0;top:0;bottom:0;width:212px;
+  background:var(--sidebar);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;z-index:50;
+  overflow-y:auto;overscroll-behavior:contain;
+}
+.brand{padding:18px 18px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.brand .logo{font-size:26px;line-height:1}
+.brand .title{font-size:16px;font-weight:700;color:var(--text)}
+.brand .sub{font-size:11px;color:var(--muted);margin-top:2px}
+.nav{padding:8px 8px;flex:1}
+.nav-item{
+  display:flex;align-items:center;gap:11px;
+  padding:11px 12px;border-radius:10px;cursor:pointer;color:var(--text);
+  font-size:14.5px;transition:background .15s,color .15s;
+  margin-bottom:3px;user-select:none;
+}
+.nav-item .ico{font-size:19px;width:24px;text-align:center;flex:none}
+.nav-item:hover{background:rgba(200,137,111,.10)}
+.nav-item.active{background:var(--sidebar-active);color:var(--accent);font-weight:700}
+.nav-item.active .ico{filter:saturate(1.2)}
+.sidebar-foot{padding:12px 16px 16px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
+
+/* ============ 主内容区 ============ */
+.main{margin-left:212px;min-height:100vh}
+.page{display:none;padding:20px 22px 40px;max-width:980px}
+.page.active{display:block}
+.page-head{display:flex;align-items:center;gap:10px;margin:4px 0 16px}
+.page-head .h-ico{font-size:24px}
+.page-head h1{font-size:20px;margin:0;font-weight:700}
+.page-head .desc{font-size:12.5px;color:var(--muted);margin-left:auto}
+
+/* ============ 卡片 ============ */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
+.card-title{font-weight:700;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+.card .muted{color:var(--muted);font-size:12.5px}
+.row-between{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+
+/* 概览统计卡网格 */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;box-shadow:var(--shadow);cursor:pointer;transition:transform .12s,box-shadow .12s}
+.stat:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(120,90,60,.12)}
+.stat .s-ico{font-size:22px}
+.stat .s-num{font-size:22px;font-weight:700;margin:6px 0 2px}
+.stat .s-label{font-size:12px;color:var(--muted)}
+
+/* 今天要处理区 */
+.today-box{border:1px solid var(--accent-soft);background:#FBEEE6;border-radius:var(--radius);
+  padding:16px;margin-bottom:18px}
+.today-box h2{margin:0 0 8px;font-size:15px;display:flex;align-items:center;gap:8px}
+.today-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dashed var(--border)}
+.today-item:last-child{border-bottom:none}
+.today-item .dot{width:8px;height:8px;border-radius:50%;background:var(--overdue);flex:none}
+.today-item.done .dot{background:var(--done)}
+.tag{font-size:11px;padding:2px 8px;border-radius:20px;background:var(--accent-soft);color:var(--accent);white-space:nowrap}
+.tag.red{background:#F6E0DC;color:var(--expense)}
+.tag.green{background:#E2EFE0;color:var(--income)}
+
+/* ============ 表单 ============ */
+.form-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;margin-bottom:18px;box-shadow:var(--shadow)}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px}
+input[type=text],input[type=number],input[type=date],textarea,select{
+  width:100%;border:1px solid var(--border);border-radius:10px;padding:10px 12px;
+  font-size:16px;background:#fff;color:var(--text);font-family:inherit}
+textarea{resize:vertical;min-height:70px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+.inline-form{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+.inline-form .grow{flex:1;min-width:140px}
+.btn{border:none;border-radius:10px;padding:10px 18px;font-size:14px;cursor:pointer;
+  background:var(--accent);color:#fff;font-weight:600;min-height:44px}
+.btn:hover{filter:brightness(1.05)}
+.btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent-soft)}
+.btn.sm{padding:6px 12px;font-size:12.5px;min-height:34px}
+.btn.danger{background:#E0A39C;color:#fff}
+.btn.block{width:100%}
+.seg{display:inline-flex;background:#F0E9DC;border-radius:10px;padding:3px;gap:3px}
+.seg button{border:none;background:transparent;padding:8px 16px;border-radius:8px;font-size:13px;
+  cursor:pointer;color:var(--muted);min-height:38px}
+.seg button.on{background:#fff;color:var(--accent);font-weight:600;box-shadow:var(--shadow)}
+
+/* ============ 列表项 ============ */
+.list-item{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid var(--border)}
+.list-item:last-child{border-bottom:none}
+.li-main{flex:1;min-width:0}
+.li-title{font-weight:600;word-break:break-word}
+.li-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.li-actions{display:flex;gap:6px;flex:none;align-items:center}
+.chk{width:22px;height:22px;border-radius:6px;border:2px solid var(--border);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex:none;font-size:13px;background:#fff}
+.chk.on{background:var(--done);border-color:var(--done);color:#fff}
+.done-text{text-decoration:line-through;color:var(--muted)}
+.amt{font-weight:700}
+.amt.in{color:var(--income)}
+.amt.out{color:var(--expense)}
+.group-label{font-size:12.5px;color:var(--accent);font-weight:700;margin:14px 0 2px;
+  display:flex;align-items:center;gap:6px}
+.empty-hint{text-align:center;color:var(--muted);padding:30px 10px;font-size:13px}
+
+/* 体重迷你柱状图（纯 CSS div，不用 SVG） */
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:80px;padding:8px 0}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.bar{width:60%;background:linear-gradient(var(--accent),var(--accent-soft));border-radius:6px 6px 0 0;min-height:3px}
+.bar-label{font-size:9px;color:var(--muted);white-space:nowrap}
+
+/* 设置步骤 */
+.steps{counter-reset:s}
+.step{position:relative;padding:10px 0 10px 36px;border-bottom:1px solid var(--border)}
+.step:last-child{border:none}
+.step::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:8px;
+  width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+.step b{color:var(--text)}
+
+/* 头部页签 */
+.page-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.pill{padding:6px 13px;border-radius:20px;background:var(--surface);border:1px solid var(--border);
+  font-size:12.5px;cursor:pointer;color:var(--muted)}
+.pill.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* ============ 响应式：手机端保留左侧固定侧边栏（更窄、仅 emoji） ============ */
+@media(max-width:768px){
+  .sidebar{width:62px}
+  .brand{padding:12px 0;justify-content:center;flex-direction:column;gap:4px}
+  .brand .logo{font-size:22px}
+  .brand .title{display:none}
+  .brand .sub{display:none}
+  .nav-item{flex-direction:column;gap:3px;padding:10px 0;justify-content:center;text-align:center;font-size:10px}
+  .nav-item .ico{font-size:20px;width:auto}
+  .nav-item span:not(.ico){font-size:9px;line-height:1.1}
+  .sidebar-foot{display:none}
+  .main{margin-left:62px}
+  .page{padding:16px 14px 60px}
+  .page-head .desc{display:none}
+  .stat-grid{grid-template-columns:repeat(2,1fr)}
+  .page-head h1{font-size:18px}
+}
+@media(max-width:380px){
+  .stat-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ 左侧固定侧边栏 ============ -->
+<aside class="sidebar">
+  <div class="brand">
+    <div class="logo">🏠</div>
+    <div>
+      <div class="title">生活工作台</div>
+      <div class="sub">个人日常记录</div>
+    </div>
+  </div>
+  <nav class="nav" id="nav">
+    <div class="nav-item active" data-route="overview"><span class="ico">📊</span><span>生活概览</span></div>
+    <div class="nav-item" data-route="notes"><span class="ico">📝</span><span>日常随笔</span></div>
+    <div class="nav-item" data-route="todos"><span class="ico">📅</span><span>日程待办</span></div>
+    <div class="nav-item" data-route="accounting"><span class="ico">💰</span><span>收支记账</span></div>
+    <div class="nav-item" data-route="study"><span class="ico">📚</span><span>学习笔记</span></div>
+    <div class="nav-item" data-route="favorites"><span class="ico">📂</span><span>常用收藏</span></div>
+    <div class="nav-item" data-route="fitness"><span class="ico">🏃</span><span>运动减肥</span></div>
+    <div class="nav-item" data-route="picks"><span class="ico">✨</span><span>每日精选</span></div>
+    <div class="nav-item" data-route="settings"><span class="ico">⚙️</span><span>设置</span></div>
+  </nav>
+  <div class="sidebar-foot">本地存储 · 无后端<br>v1.0</div>
+</aside>
+
+<!-- ============ 主内容区 ============ -->
+<main class="main" id="main">
+  <section id="page-overview" class="page active"></section>
+  <section id="page-notes" class="page"></section>
+  <section id="page-todos" class="page"></section>
+  <section id="page-accounting" class="page"></section>
+  <section id="page-study" class="page"></section>
+  <section id="page-favorites" class="page"></section>
+  <section id="page-fitness" class="page"></section>
+  <section id="page-picks" class="page"></section>
+  <section id="page-settings" class="page"></section>
+</main>
+
+<script>
+/* ============================================================
+   个人生活工作台 · 单文件应用脚本
+   数据全部存 localStorage，key 统一前缀 wb_lifehub_
+   ============================================================ */
+(function(){
+"use strict";
+
+var K = {
+  notes:'wb_lifehub_notes', todos:'wb_lifehub_todos', accounting:'wb_lifehub_accounting',
+  study:'wb_lifehub_study', favorites:'wb_lifehub_favorites', fitness:'wb_lifehub_fitness',
+  picks:'wb_lifehub_picks', seeded:'wb_lifehub_seeded'
+};
+var VER = '1.0';
+
+/* ---------- 工具 ---------- */
+function pad(n){return String(n).padStart(2,'0');}
+function todayStr(){var d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function dayOffset(n){var d=new Date();d.setDate(d.getDate()+n);return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function nowMonth(){return todayStr().slice(0,7);}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function esc(s){s=(s==null?'':String(s));return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function load(key,def){try{var v=localStorage.getItem(key);return v?JSON.parse(v):def;}catch(e){return def;}}
+function save(key,val){try{localStorage.setItem(key,JSON.stringify(val));}catch(e){}}
+function fmt(n){return Number(n).toLocaleString('zh-CN',{maximumFractionDigits:2});}
+
+/* ---------- 预置示例数据（首次打开注入，真实感内容） ---------- */
+function seed(){
+  if(localStorage.getItem(K.seeded)==='1') return;
+  var t=todayStr();
+  save(K.notes,[
+    {id:uid(),date:dayOffset(-3),content:'今天早起跑了5公里，江边空气清冽，整个人都清醒了。坚持真有回报。'},
+    {id:uid(),date:dayOffset(-2),content:'重读《被讨厌的勇气》第三章，「课题分离」让我重新想了想和同事的边界。'},
+    {id:uid(),date:dayOffset(-1),content:'试用 AI 帮忙润色了一份周报，效率至少提升一倍，表达也更顺了。'},
+    {id:uid(),date:t,content:'菜场买了新鲜番茄和土鸡蛋，做了盘番茄炒蛋，比外卖好吃太多。'},
+    {id:uid(),date:t,content:'学吉他弹唱《晴天》，Bm 和弦转换还得再练几百次。'},
+    {id:uid(),date:t,content:'晚上散步抬头看到满月，想起小时候奶奶讲的嫦娥故事。'}
+  ]);
+  save(K.todos,[
+    {id:uid(),text:'提交上周季度复盘报告',date:dayOffset(-2),done:false},   // 逾期
+    {id:uid(),text:'给妈妈打个电话问候',date:t,done:false},                   // 今天
+    {id:uid(),text:'整理本月记账凭证并归档',date:t,done:false},
+    {id:uid(),text:'给阳台绿植浇水、施点肥',date:t,done:true},
+    {id:uid(),text:'预约下周牙科年度检查',date:dayOffset(2),done:false},
+    {id:uid(),text:'读完《深度工作》第五章并写卡片笔记',date:dayOffset(3),done:false},
+    {id:uid(),text:'周末采购下周食材清单',date:dayOffset(6),done:false}
+  ]);
+  save(K.accounting,[
+    {id:uid(),date:dayOffset(-5),type:'收入',amount:800,category:'副业稿费',note:'某平台稿费到账'},
+    {id:uid(),date:dayOffset(-4),type:'支出',amount:156.5,category:'生活采购',note:'超市：番茄鸡蛋牛奶'},
+    {id:uid(),date:dayOffset(-3),type:'支出',amount:32,category:'餐饮',note:'下午咖啡'},
+    {id:uid(),date:dayOffset(-2),type:'支出',amount:50,category:'通讯',note:'话费充值'},
+    {id:uid(),date:dayOffset(-1),type:'收入',amount:23.6,category:'理财',note:'货币基金利息'},
+    {id:uid(),date:dayOffset(-1),type:'支出',amount:28,category:'餐饮',note:'工作日午餐'},
+    {id:uid(),date:t,type:'支出',amount:24.5,category:'交通',note:'打车通勤'}
+  ]);
+  save(K.study,[
+    {id:uid(),title:'费曼学习法',content:'能用最简单的话向新人讲明白，才算真懂。试着把新知识讲给「橡皮鸭」听，卡壳的地方就是没懂的地方。',date:dayOffset(-6)},
+    {id:uid(),title:'番茄工作法',content:'25分钟专注 + 5分钟休息，4个番茄后长休息15-30分钟。关键是减少切换成本，而不是追求时长。',date:dayOffset(-4)},
+    {id:uid(),title:'艾宾浩斯遗忘曲线',content:'学完1小时内复述一次，1天后再复习，记忆留存远超临时抱佛脚。复习节点：1h / 1d / 2d / 7d / 15d。',date:dayOffset(-2)},
+    {id:uid(),title:'深度工作的四种深度',content:'减少浅层事务（邮件、会议、社交媒体），把整块不被打扰的时间留给高价值任务。专注力是稀缺资源。',date:dayOffset(-1)},
+    {id:uid(),title:'卡片盒笔记法',content:'一条笔记只记一个想法，用自己的话写，并建立笔记之间的链接。日积月累会自发生成观点。',date:t}
+  ]);
+  save(K.favorites,[
+    {id:uid(),name:'WorkBuddy 官网',url:'https://www.workbuddy.cn',category:'工具'},
+    {id:uid(),name:'MDN Web Docs',url:'https://developer.mozilla.org',category:'学习'},
+    {id:uid(),name:'Excalidraw 手绘白板',url:'https://excalidraw.com',category:'效率'},
+    {id:uid(),name:'微信读书',url:'https://weread.qq.com',category:'阅读'},
+    {id:uid(),name:'TinyPNG 图片压缩',url:'https://tinypng.com',category:'工具'},
+    {id:uid(),name:'少数派',url:'https://sspai.com',category:'资讯'},
+    {id:uid(),name:'Remove.bg 一键抠图',url:'https://www.remove.bg',category:'工具'}
+  ]);
+  save(K.fitness,[
+    {id:uid(),date:dayOffset(-6),type:'跑步',duration:30,weight:76.2},
+    {id:uid(),date:dayOffset(-5),type:'跳绳',duration:20,weight:76.0},
+    {id:uid(),date:dayOffset(-4),type:'休息',duration:0,weight:75.8},
+    {id:uid(),date:dayOffset(-3),type:'跑步',duration:35,weight:75.5},
+    {id:uid(),date:dayOffset(-2),type:'力量训练',duration:40,weight:75.3},
+    {id:uid(),date:dayOffset(-1),type:'跑步',duration:25,weight:75.1},
+    {id:uid(),date:t,type:'快走',duration:45,weight:74.9}
+  ]);
+  save(K.picks,[
+    {id:uid(),type:'影',title:'《奥本海默》',note:'诺兰的视听盛宴，三小时不觉得长，值得二刷。',date:dayOffset(-7)},
+    {id:uid(),type:'音',title:'《大鱼》- 周深',note:'空灵治愈，深夜独处时循环正好。',date:dayOffset(-4)},
+    {id:uid(),type:'文',title:'半佛仙人 公众号某篇',note:'用幽默解构商业套路，文笔犀利，适合通勤读。',date:dayOffset(-2)},
+    {id:uid(),type:'物',title:'拓竹 A1 3D 打印机',note:'入门友好、做工扎实，DIY 小物件很上头。',date:dayOffset(-1)},
+    {id:uid(),type:'书',title:'《置身事内》',note:'讲中国地方政府与经济发展，通俗深刻，读完对宏观更有感觉。',date:t},
+    {id:uid(),type:'剧',title:'《漫长的季节》',note:'范伟封神之作，后劲极大，看到最后会哭。',date:t}
+  ]);
+  localStorage.setItem(K.seeded,'1');
+}
+
+/* ---------- 数据存取封装 ---------- */
+var D={
+  notes:function(){return load(K.notes,[]);},
+  todos:function(){return load(K.todos,[]);},
+  accounting:function(){return load(K.accounting,[]);},
+  study:function(){return load(K.study,[]);},
+  favorites:function(){return load(K.favorites,[]);},
+  fitness:function(){return load(K.fitness,[]);},
+  picks:function(){return load(K.picks,[]);}
+};
+
+/* ---------- 路由 ---------- */
+var routes=['overview','notes','todos','accounting','study','favorites','fitness','picks','settings'];
+function navigate(route){
+  if(routes.indexOf(route)<0) route='overview';
+  var pages=document.querySelectorAll('.page');
+  for(var i=0;i<pages.length;i++) pages[i].classList.toggle('active',pages[i].id==='page-'+route);
+  var items=document.querySelectorAll('.nav-item');
+  for(var j=0;j<items.length;j++) items[j].classList.toggle('active',items[j].dataset.route===route);
+  render[route]();
+  try{history.replaceState(null,'','#'+route);}catch(e){}
+  var main=document.getElementById('main'); if(main) main.scrollTo(0,0);
+}
+
+/* ---------- 渲染：各页面 ---------- */
+var render={};
+
+function head(ico,title,desc){
+  return '<div class="page-head"><span class="h-ico">'+ico+'</span>'+
+    '<h1>'+title+'</h1><span class="desc">'+esc(desc)+'</span></div>';
+}
+
+/* 1. 概览 */
+render.overview=function(){
+  var todos=D.todos(), acc=D.accounting(), fit=D.fitness();
+  var today=todayStr();
+  var overdue=[], todays=[];
+  todos.forEach(function(t){
+    if(t.done) return;
+    if(t.date<today) overdue.push(t);
+    if(t.date===today) todays.push(t);
+  });
+  var mo=nowMonth();
+  var inc=0,exp=0;
+  acc.forEach(function(a){if(a.date.slice(0,7)===mo){if(a.type==='收入')inc+=a.amount;else exp+=a.amount;}});
+  // 本周运动（近7天非休息）
+  var weekCount=0; fit.forEach(function(f){if(f.date>=dayOffset(-6)&&f.type!=='休息')weekCount++;});
+  var latestW = fit.length? fit[fit.length-1].weight : '--';
+
+  var h=head('📊','生活概览','你的日常，一目了然');
+
+  // 今天要处理
+  var th='<div class="today-box"><h2>📌 今天要处理</h2>';
+  var pend=overdue.concat(todays);
+  if(!pend.length){ th+='<div class="empty-hint">今天没有待办，轻松一下 🎉</div>'; }
+  else{
+    pend.forEach(function(t){
+      var ov = t.date<today;
+      th+='<div class="today-item"><span class="dot"></span>'+
+        '<div class="li-main"><div class="li-title">'+esc(t.text)+'</div>'+
+        '<div class="li-meta">'+(ov?'<span class="tag red">逾期</span> ':'')+'📅 '+t.date+'</div></div>'+
+        '<button class="btn sm ghost" data-go="todos">去处理</button></div>';
+    });
+  }
+  th+='</div>';
+
+  // 统计卡
+  var cards=[
+    {ico:'📅',num:todos.filter(function(t){return !t.done && t.date<=today;}).length,label:'待处理（含逾期）',route:'todos'},
+    {ico:'💰',num:'¥'+fmt(inc-exp),label:'本月结余 收¥'+fmt(inc)+' 支¥'+fmt(exp),route:'accounting'},
+    {ico:'📝',num:D.notes().length,label:'随笔累计',route:'notes'},
+    {ico:'🏃',num:weekCount+'次',label:'本周运动 · 当前'+latestW+'kg',route:'fitness'},
+    {ico:'📚',num:D.study().length,label:'学习笔记',route:'study'},
+    {ico:'📂',num:D.favorites().length,label:'常用收藏',route:'favorites'},
+    {ico:'✨',num:D.picks().length,label:'每日精选',route:'picks'},
+    {ico:'⚙️',num:'设置',label:'PWA / 备份 / 清空',route:'settings'}
+  ];
+  var grid='<div class="stat-grid">';
+  cards.forEach(function(c){
+    grid+='<div class="stat" data-go="'+c.route+'">'+
+      '<div class="s-ico">'+c.ico+'</div>'+
+      '<div class="s-num">'+c.num+'</div>'+
+      '<div class="s-label">'+esc(c.label)+'</div></div>';
+  });
+  grid+='</div>';
+  var tip='<div class="card"><div class="card-title">💡 小提示</div>'+
+    '<div class="muted">点击任意统计卡可直达对应模块。所有数据保存在本机浏览器本地存储，不上云、不联网。'+
+    '苹果手机可在 Safari「分享 → 添加到主屏幕」，像 App 一样全屏打开（详见 ⚙️设置）。</div></div>';
+  document.getElementById('page-overview').innerHTML=h+th+grid+tip;
+};
+
+/* 2. 随笔 */
+render.notes=function(){
+  var list=D.notes().slice().reverse();
+  var h=head('📝','日常随笔','碎碎念，想记就记');
+  var form='<div class="form-card"><div class="field"><label>✍️ 写点什么</label>'+
+    '<textarea id="note-content" placeholder="此刻的想法、见闻、感受…" maxlength="800"></textarea></div>'+
+    '<div class="row-between"><span class="muted" style="font-size:12px">日期：'+todayStr()+'</span>'+
+    '<button class="btn" data-act="add-note">＋ 记一条</button></div></div>';
+  var body='';
+  if(!list.length) body='<div class="empty-hint">还没有随笔，记第一条吧 ✍️</div>';
+  list.forEach(function(n){
+    body+='<div class="card"><div class="row-between">'+
+      '<div class="li-meta">📅 '+n.date+'</div>'+
+      '<button class="btn sm ghost" data-act="del-note" data-id="'+n.id+'">删除</button></div>'+
+      '<div style="margin-top:6px;white-space:pre-wrap">'+esc(n.content)+'</div></div>';
+  });
+  document.getElementById('page-notes').innerHTML=h+form+body;
+};
+
+/* 3. 待办 */
+render.todos=function(){
+  var list=D.todos();
+  var today=todayStr();
+  var ov=[],td=[],up=[];
+  list.forEach(function(t){
+    if(t.done) return;
+    if(t.date<today) ov.push(t); else if(t.date===today) td.push(t); else up.push(t);
+  });
+  var done=list.filter(function(t){return t.done;});
+  var h=head('📅','日程待办','每日计划，完成即划掉');
+  var form='<div class="form-card"><div class="inline-form">'+
+    '<div class="grow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">待办事项</label>'+
+    '<input type="text" id="todo-text" placeholder="要做的事…" maxlength="60"></div>'+
+    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">日期</label>'+
+    '<input type="date" id="todo-date" value="'+today+'"></div>'+
+    '<button class="btn" data-act="add-todo">＋ 添加</button></div></div>';
+
+  function row(t,flag){
+    var tag='';
+    if(flag==='over') tag=' <span class="tag red">逾期</span>';
+    if(flag==='today') tag=' <span class="tag green">今天</span>';
+    return '<div class="list-item"><div class="chk'+(t.done?' on':'')+'" data-act="toggle-todo" data-id="'+t.id+'">'+(t.done?'✓':'')+'</div>'+
+      '<div class="li-main"><div class="li-title'+(t.done?' done-text':'')+'">'+esc(t.text)+tag+'</div>'+
+      '<div class="li-meta">📅 '+t.date+'</div></div>'+
+      '<div class="li-actions"><button class="btn sm ghost" data-act="del-todo" data-id="'+t.id+'">删除</button></div></div>';
+  }
+  var body='';
+  function group(title,arr,flag){
+    if(!arr.length) return '';
+    var s='<div class="group-label">'+title+'（'+arr.length+'）</div>';
+    arr.forEach(function(t){s+=row(t,flag);});
+    return s;
+  }
+  body+=group('🔴 逾期未完成',ov,'over');
+  body+=group('⏰ 今天',td,'today');
+  body+=group('📅 即将到期',up.sort(function(a,b){return a.date<b.date?-1:1;}),'');
+  body+=group('✅ 已完成',done,'');
+  if(!body) body='<div class="empty-hint">还没有待办，加一条吧 📅</div>';
+  document.getElementById('page-todos').innerHTML=h+form+'<div class="card">'+body+'</div>';
+};
+
+/* 4. 记账 */
+render.accounting=function(){
+  var list=D.accounting().slice().reverse();
+  var mo=nowMonth();
+  var inc=0,exp=0;
+  D.accounting().forEach(function(a){if(a.date.slice(0,7)===mo){if(a.type==='收入')inc+=a.amount;else exp+=a.amount;}});
+  var h=head('💰','收支记账','收入绿、支出红，国内习惯');
+  var sum='<div class="card"><div class="row-between">'+
+    '<div><div class="muted" style="font-size:12px">'+mo.slice(5)+'月收入</div><div class="amt in">+¥'+fmt(inc)+'</div></div>'+
+    '<div><div class="muted" style="font-size:12px">'+mo.slice(5)+'月支出</div><div class="amt out">-¥'+fmt(exp)+'</div></div>'+
+    '<div><div class="muted" style="font-size:12px">本月结余</div><div class="amt" style="color:'+(inc-exp>=0?'var(--income)':'var(--expense)')+'">¥'+fmt(inc-exp)+'</div></div>'+
+    '</div></div>';
+  var form='<div class="form-card"><div class="inline-form">'+
+    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">类型</label>'+
+    '<div class="seg" id="acc-seg"><button class="on" data-v="支出">💸 支出</button><button data-v="收入">💵 收入</button></div></div>'+
+    '<div class="grow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">金额</label>'+
+    '<input type="number" id="acc-amount" placeholder="0.00" step="0.01" inputmode="decimal"></div>'+
+    '<div class="grow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">分类</label>'+
+    '<input type="text" id="acc-cat" placeholder="餐饮/交通/工资…" maxlength="10"></div>'+
+    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">日期</label>'+
+    '<input type="date" id="acc-date" value="'+today+'"></div>'+
+    '<div class="grow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">备注</label>'+
+    '<input type="text" id="acc-note" placeholder="可填可不填" maxlength="30"></div>'+
+    '<button class="btn" data-act="add-acc">＋ 记账</button></div></div>';
+  var body='';
+  if(!list.length) body='<div class="empty-hint">还没有记录，记第一笔吧 💰</div>';
+  list.forEach(function(a){
+    var cls=a.type==='收入'?'in':'out';
+    var sign=a.type==='收入'?'+':'-';
+    body+='<div class="list-item"><div class="li-main">'+
+      '<div class="li-title">'+esc(a.category||'未分类')+(a.note?' · <span class="muted">'+esc(a.note)+'</span>':'')+'</div>'+
+      '<div class="li-meta">'+a.type+' · 📅 '+a.date+'</div></div>'+
+      '<div class="amt '+cls+'">'+sign+'¥'+fmt(a.amount)+'</div>'+
+      '<button class="btn sm ghost" data-act="del-acc" data-id="'+a.id+'">删除</button></div>';
+  });
+  document.getElementById('page-accounting').innerHTML=h+sum+form+'<div class="card">'+body+'</div>';
+};
+
+/* 5. 学习 */
+render.study=function(){
+  var list=D.study().slice().reverse();
+  var h=head('📚','学习笔记','摘录、知识点、自己的话');
+  var form='<div class="form-card"><div class="field"><label>📌 标题</label>'+
+    '<input type="text" id="study-title" placeholder="如：费曼学习法" maxlength="20"></div>'+
+    '<div class="field"><label>📖 内容（用自己的话写）</label>'+
+    '<textarea id="study-content" placeholder="记一个想法…" maxlength="500"></textarea></div>'+
+    '<div class="row-between"><span class="muted" style="font-size:12px">日期：'+todayStr()+'</span>'+
+    '<button class="btn" data-act="add-study">＋ 记一条</button></div></div>';
+  var body='';
+  if(!list.length) body='<div class="empty-hint">还没有笔记，记第一条吧 📚</div>';
+  list.forEach(function(s){
+    body+='<div class="card"><div class="row-between">'+
+      '<div class="card-title">📌 '+esc(s.title)+'</div>'+
+      '<button class="btn sm ghost" data-act="del-study" data-id="'+s.id+'">删除</button></div>'+
+      '<div style="margin-top:4px;white-space:pre-wrap">'+esc(s.content)+'</div>'+
+      '<div class="li-meta" style="margin-top:8px">📅 '+s.date+'</div></div>';
+  });
+  document.getElementById('page-study').innerHTML=h+form+body;
+};
+
+/* 6. 收藏 */
+render.favorites=function(){
+  var list=D.favorites();
+  var cats={}; list.forEach(function(f){(cats[f.category]=cats[f.category]||[]).push(f);});
+  var h=head('📂','常用收藏','按分类快速跳转');
+  var form='<div class="form-card"><div class="inline-form">'+
+    '<div class="grow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">名称</label>'+
+    '<input type="text" id="fav-name" placeholder="如：Excalidraw" maxlength="20"></div>'+
+    '<div class="grow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">链接</label>'+
+    '<input type="text" id="fav-url" placeholder="https://…" maxlength="200"></div>'+
+    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">分类</label>'+
+    '<input type="text" id="fav-cat" placeholder="工具" maxlength="8"></div>'+
+    '<button class="btn" data-act="add-fav">＋ 收藏</button></div></div>';
+  var body='';
+  if(!list.length) body='<div class="empty-hint">还没有收藏，加一个吧 📂</div>';
+  Object.keys(cats).forEach(function(c){
+    body+='<div class="group-label">🏷️ '+esc(c)+'（'+cats[c].length+'）</div>';
+    cats[c].forEach(function(f){
+      var url=f.url||''; var safe=url.match(/^https?:\/\//i)?url:(f.url?('http://'+f.url):'#');
+      body+='<div class="list-item"><div class="li-main">'+
+        '<div class="li-title">🔗 <a href="'+esc(safe)+'" target="_blank" rel="noopener">'+esc(f.name)+'</a></div>'+
+        '<div class="li-muted li-meta">'+esc(url)+'</div></div>'+
+        '<button class="btn sm ghost" data-act="del-fav" data-id="'+f.id+'">删除</button></div>';
+    });
+  });
+  document.getElementById('page-favorites').innerHTML=h+form+'<div class="card">'+body+'</div>';
+};
+
+/* 7. 运动 */
+render.fitness=function(){
+  var list=D.fitness();
+  var h=head('🏃','运动减肥','打卡 + 体重趋势');
+  // 统计
+  var weekCount=0; list.forEach(function(f){if(f.date>=dayOffset(-6)&&f.type!=='休息')weekCount++;});
+  var latest=list.length?list[list.length-1].weight:'--';
+  var first=list.length?list[0].weight:null;
+  var delta = (first!=null && latest!=='--')?(latest-first):0;
+  var stat='<div class="card"><div class="row-between">'+
+    '<div><div class="muted" style="font-size:12px">本周运动</div><div class="s-num" style="font-size:20px">'+weekCount+'次</div></div>'+
+    '<div><div class="muted" style="font-size:12px">当前体重</div><div class="s-num" style="font-size:20px">'+latest+'kg</div></div>'+
+    '<div><div class="muted" style="font-size:12px">累计变化</div><div class="s-num" style="font-size:20px;color:'+(delta<=0?'var(--income)':'var(--expense)')+'">'+(delta<=0?'':'+')+fmt(delta)+'kg</div></div>'+
+    '</div></div>';
+  // 体重迷你柱状图（CSS div）
+  var recent=list.slice(-7);
+  var weights=recent.map(function(f){return Number(f.weight)||0;}).filter(function(n){return n>0;});
+  var mn=Math.min.apply(null,weights.length?weights:[0]), mx=Math.max.apply(null,weights.length?weights:[1]);
+  if(mx-mn<1) mx=mn+1;
+  var chart='<div class="card"><div class="card-title">📈 体重趋势（近'+recent.length+'次）</div><div class="bar-chart">';
+  recent.forEach(function(f){
+    var v=Number(f.weight)||0; var ratio=(v-mn)/(mx-mn);
+    var h2=Math.max(4,Math.round(ratio*56));
+    chart+='<div class="bar-col"><div class="bar" style="height:'+h2+'px" title="'+f.weight+'kg"></div>'+
+      '<div class="bar-label">'+f.weight+'</div></div>';
+  });
+  chart+='</div><div class="muted" style="font-size:11px;text-align:center;margin-top:4px">柱越高 = 体重越重，越矮越好 🎯</div></div>';
+
+  var form='<div class="form-card"><div class="inline-form">'+
+    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">项目</label>'+
+    '<select id="fit-type"><option>跑步</option><option>跳绳</option><option>力量训练</option><option>快走</option><option>骑行</option><option>休息</option><option>其他</option></select></div>'+
+    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">时长(分)</label>'+
+    '<input type="number" id="fit-dur" placeholder="0" inputmode="numeric" style="width:90px"></div>'+
+    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">体重(kg)</label>'+
+    '<input type="number" id="fit-w" placeholder="'+latest+'" step="0.1" inputmode="decimal" style="width:100px"></div>'+
+    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">日期</label>'+
+    '<input type="date" id="fit-date" value="'+today+'"></div>'+
+    '<button class="btn" data-act="add-fit">＋ 打卡</button></div></div>';
+
+  var body='<div class="group-label">📋 打卡记录</div>';
+  if(!list.length) body+='<div class="empty-hint">还没有记录，打个卡吧 🏃</div>';
+  list.slice().reverse().forEach(function(f){
+    body+='<div class="list-item"><div class="li-main">'+
+      '<div class="li-title">'+esc(f.type)+' · '+(f.duration?f.duration+'分钟':'休息日')+(f.weight?' · 当前 '+f.weight+'kg':'')+'</div>'+
+      '<div class="li-meta">📅 '+f.date+'</div></div>'+
+      '<button class="btn sm ghost" data-act="del-fit" data-id="'+f.id+'">删除</button></div>';
+  });
+  document.getElementById('page-fitness').innerHTML=h+stat+chart+form+'<div class="card">'+body+'</div>';
+};
+
+/* 8. 精选 */
+render.picks=function(){
+  var list=D.picks().slice().reverse();
+  var types=['影','音','文','物','书','剧','其他'];
+  var h=head('✨','每日精选','影音好文好物推荐');
+  var form='<div class="form-card"><div class="inline-form">'+
+    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">类型</label>'+
+    '<select id="pick-type">'+types.map(function(t){return '<option>'+t+'</option>';}).join('')+'</select></div>'+
+    '<div class="grow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">标题</label>'+
+    '<input type="text" id="pick-title" placeholder="如：《奥本海默》" maxlength="30"></div>'+
+    '<div class="grow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">推荐理由</label>'+
+    '<input type="text" id="pick-note" placeholder="一句话推荐" maxlength="60"></div>'+
+    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">日期</label>'+
+    '<input type="date" id="pick-date" value="'+today+'"></div>'+
+    '<button class="btn" data-act="add-pick">＋ 收藏</button></div></div>';
+  var body='';
+  if(!list.length) body='<div class="empty-hint">还没有精选，记一条吧 ✨</div>';
+  list.forEach(function(p){
+    body+='<div class="card"><div class="row-between">'+
+      '<div class="card-title">'+p.type+' · '+esc(p.title)+'</div>'+
+      '<button class="btn sm ghost" data-act="del-pick" data-id="'+p.id+'">删除</button></div>'+
+      '<div style="margin-top:4px">'+esc(p.note)+'</div>'+
+      '<div class="li-meta" style="margin-top:8px">📅 '+p.date+'</div></div>';
+  });
+  document.getElementById('page-picks').innerHTML=h+form+body;
+};
+
+/* 9. 设置 */
+render.settings=function(){
+  var h=head('⚙️','设置','PWA 指引 / 备份 / 清空');
+  var guide='<div class="card"><div class="card-title">📱 苹果手机「添加到主屏幕」全屏使用</div>'+
+    '<div class="muted" style="margin-bottom:6px">添加后点击主屏幕图标，将以全屏 App 模式打开，没有浏览器地址栏。</div>'+
+    '<div class="step"><b>用 Safari 打开本页面</b>（iOS 的「添加到主屏幕」仅 Safari 支持，微信/QQ 内置浏览器不行，先点右上角在 Safari 打开）</div>'+
+    '<div class="step"><b>点击底部「分享」按钮</b>（方框里一个向上箭头的图标，通常在底部工具栏中间）</div>'+
+    '<div class="step"><b>向下滚动找到「添加到主屏幕」</b>，点击它</div>'+
+    '<div class="step"><b>可修改名称</b>（默认「生活台」），点右上角「添加」</div>'+
+    '<div class="step"><b>回到桌面</b>，点击新出现的「生活台」图标，即可以全屏 App 模式打开，无地址栏 🎉</div>'+
+    '<div class="step"><b>安卓手机</b>：用 Chrome 打开 → 菜单（⋮）→「添加到主屏幕」即可</div>'+
+    '</div>';
+  var data='<div class="card"><div class="card-title">💾 数据备份</div>'+
+    '<div class="muted" style="margin-bottom:10px">所有数据仅保存在本机浏览器，建议定期导出 JSON 备份。换设备时导入即可恢复。</div>'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap">'+
+    '<button class="btn ghost" data-act="export">⬇️ 导出 JSON 备份</button>'+
+    '<button class="btn ghost" data-act="import">⬆️ 导入恢复</button>'+
+    '<input type="file" id="import-file" accept="application/json" style="display:none"></div></div>';
+  var danger='<div class="card" style="border-color:#E0A39C"><div class="card-title" style="color:var(--expense)">⚠️ 清空全部本地数据</div>'+
+    '<div class="muted" style="margin-bottom:10px">将删除随笔、待办、记账、学习、收藏、运动、精选等全部本地数据，操作不可恢复，请先导出备份。</div>'+
+    '<button class="btn danger" data-act="clear-all">🗑️ 清空全部本地数据</button></div>';
+  var ver='<div class="card"><div class="row-between"><div><b>个人生活工作台</b></div>'+
+    '<div class="muted">v'+VER+'</div></div>'+
+    '<div class="muted" style="margin-top:6px;font-size:12px">单文件 HTML · 纯 localStorage · 无后端 · 全 emoji 图标 · 暖米温馨主题。'+
+    '后续可在本文件基础上迭代新增模块。</div></div>';
+  document.getElementById('page-settings').innerHTML=h+guide+data+danger+ver;
+};
+
+/* ---------- 操作：增删改 ---------- */
+function addNote(){var el=g('note-content');var v=el.value.trim();if(!v){el.focus();return;}var a=D.notes();a.push({id:uid(),date:todayStr(),content:v});save(K.notes,a);render.notes();}
+function delNote(id){var a=D.notes().filter(function(n){return n.id!==id;});save(K.notes,a);render.notes();}
+function addTodo(){var t=g('todo-text').value.trim();var d=g('todo-date').value||todayStr();if(!t){g('todo-text').focus();return;}var a=D.todos();a.push({id:uid(),text:t,date:d,done:false});save(K.todos,a);render.todos();}
+function delTodo(id){var a=D.todos().filter(function(t){return t.id!==id;});save(K.todos,a);render.todos();}
+function toggleTodo(id){var a=D.todos();a.forEach(function(t){if(t.id===id)t.done=!t.done;});save(K.todos,a);render.todos();}
+var accType='支出';
+function addAcc(){var amt=parseFloat(g('acc-amount').value);var cat=g('acc-cat').value.trim()||'未分类';var note=g('acc-note').value.trim();var date=g('acc-date').value||todayStr();if(!amt||amt<=0){g('acc-amount').focus();return;}var a=D.accounting();a.push({id:uid(),date:date,type:accType,amount:amt,category:cat,note:note});save(K.accounting,a);render.accounting();}
+function delAcc(id){var a=D.accounting().filter(function(x){return x.id!==id;});save(K.accounting,a);render.accounting();}
+function addStudy(){var t=g('study-title').value.trim();var c=g('study-content').value.trim();if(!t||!c){g('study-title').focus();return;}var a=D.study();a.push({id:uid(),title:t,content:c,date:todayStr()});save(K.study,a);render.study();}
+function delStudy(id){var a=D.study().filter(function(s){return s.id!==id;});save(K.study,a);render.study();}
+function addFav(){var n=g('fav-name').value.trim();var u=g('fav-url').value.trim();var c=g('fav-cat').value.trim()||'其他';if(!n||!u){g('fav-name').focus();return;}var a=D.favorites();a.push({id:uid(),name:n,url:u,category:c});save(K.favorites,a);render.favorites();}
+function delFav(id){var a=D.favorites().filter(function(f){return f.id!==id;});save(K.favorites,a);render.favorites();}
+function addFit(){var ty=g('fit-type').value;var du=parseInt(g('fit-dur').value,10)||0;var w=parseFloat(g('fit-w').value);var date=g('fit-date').value||todayStr();if(isNaN(w)){w=list2lastWeight();}var a=D.fitness();a.push({id:uid(),date:date,type:ty,duration:du,weight:w});save(K.fitness,a);render.fitness();}
+function delFit(id){var a=D.fitness().filter(function(f){return f.id!==id;});save(K.fitness,a);render.fitness();}
+function list2lastWeight(){var f=D.fitness();return f.length?f[f.length-1].weight:'';}
+function addPick(){var ty=g('pick-type').value;var t=g('pick-title').value.trim();var n=g('pick-note').value.trim();var date=g('pick-date').value||todayStr();if(!t){g('pick-title').focus();return;}var a=D.picks();a.push({id:uid(),type:ty,title:t,note:n,date:date});save(K.picks,a);render.picks();}
+
+function exportJSON(){
+  var data={version:VER,exportedAt:new Date().toISOString(),
+    notes:D.notes(),todos:D.todos(),accounting:D.accounting(),study:D.study(),
+    favorites:D.favorites(),fitness:D.fitness(),picks:D.picks()};
+  var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');a.href=url;a.download='lifehub-backup-'+todayStr()+'.json';
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+function importJSON(file){
+  var r=new FileReader();
+  r.onload=function(){
+    try{
+      var d=JSON.parse(r.result);
+      if(d.notes)save(K.notes,d.notes);
+      if(d.todos)save(K.todos,d.todos);
+      if(d.accounting)save(K.accounting,d.accounting);
+      if(d.study)save(K.study,d.study);
+      if(d.favorites)save(K.favorites,d.favorites);
+      if(d.fitness)save(K.fitness,d.fitness);
+      if(d.picks)save(K.picks,d.picks);
+      alert('✅ 导入成功！');
+      navigate('settings');
+    }catch(e){alert('❌ 文件解析失败，请选择正确的备份 JSON。');}
+  };
+  r.readAsText(file);
+}
+function clearAll(){
+  if(!confirm('⚠️ 确认清空全部本地数据吗？\n此操作不可恢复，建议先导出备份。\n\n点击「确定」将删除随笔/待办/记账/学习/收藏/运动/精选全部数据。')) return;
+  Object.keys(K).forEach(function(k){localStorage.removeItem(K[k]);});
+  localStorage.removeItem(K.seeded);
+  seed();
+  alert('✅ 已清空并恢复示例数据。');
+  navigate('overview');
+}
+
+function g(id){return document.getElementById(id);}
+
+/* ---------- 事件委托 ---------- */
+document.addEventListener('click',function(e){
+  var t=e.target.closest('[data-act],[data-go],[data-route]');
+  if(!t) return;
+  if(t.dataset.route){navigate(t.dataset.route);return;}
+  if(t.dataset.go){navigate(t.dataset.go);return;}
+  var act=t.dataset.act, id=t.dataset.id;
+  switch(act){
+    case 'add-note':addNote();break;
+    case 'del-note':delNote(id);break;
+    case 'add-todo':addTodo();break;
+    case 'del-todo':delTodo(id);break;
+    case 'toggle-todo':toggleTodo(id);break;
+    case 'add-acc':addAcc();break;
+    case 'del-acc':delAcc(id);break;
+    case 'add-study':addStudy();break;
+    case 'del-study':delStudy(id);break;
+    case 'add-fav':addFav();break;
+    case 'del-fav':delFav(id);break;
+    case 'add-fit':addFit();break;
+    case 'del-fit':delFit(id);break;
+    case 'add-pick':addPick();break;
+    case 'del-pick':delPick(id);break;
+    case 'export':exportJSON();break;
+    case 'import':g('import-file').click();break;
+    case 'clear-all':clearAll();break;
+  }
+});
+// 记账类型切换
+document.addEventListener('click',function(e){
+  var b=e.target.closest('#acc-seg button');
+  if(!b) return;
+  document.querySelectorAll('#acc-seg button').forEach(function(x){x.classList.remove('on');});
+  b.classList.add('on'); accType=b.dataset.v;
+});
+// 文件导入
+document.addEventListener('change',function(e){
+  if(e.target.id==='import-file' && e.target.files[0]){importJSON(e.target.files[0]);}
+});
+// 侧边栏点击
+document.getElementById('nav').addEventListener('click',function(e){
+  var it=e.target.closest('.nav-item'); if(it) navigate(it.dataset.route);
+});
+// 回车快捷提交
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Enter') return;
+  var map={'todo-text':'add-todo','acc-amount':'add-acc','fav-url':'add-fav','pick-title':'add-pick','study-title':'add-study'};
+  // 用 Ctrl/Cmd+Enter 提交，避免误触
+  if(!(e.ctrlKey||e.metaKey)) return;
+  for(var id in map){if(document.activeElement&&document.activeElement.id===id){e.preventDefault();var el=document.querySelector('[data-act="'+map[id]+'"]');if(el)el.click();}}
+});
+
+/* ---------- PWA：运行时注入 manifest + canvas emoji 图标 ---------- */
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+function makeIcon(size,emoji){
+  var c=document.createElement('canvas');c.width=c.height=size;
+  var ctx=c.getContext('2d');
+  var g=ctx.createLinearGradient(0,0,size,size);g.addColorStop(0,'#F3DCC8');g.addColorStop(1,'#C8896F');
+  ctx.fillStyle=g;roundRect(ctx,0,0,size,size,size*0.22);ctx.fill();
+  ctx.textAlign='center';ctx.textBaseline='middle';
+  ctx.font=(size*0.58)+'px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+  ctx.fillText(emoji,size/2,size/2+size*0.04);
+  return c.toDataURL('image/png');
+}
+function setupPWA(){
+  try{
+    var manifest={name:'个人生活工作台',short_name:'生活台',start_url:'.',scope:'.',
+      display:'standalone',orientation:'any',background_color:'#F6F1EA',theme_color:'#C8896F',
+      description:'个人日常生活记录工作台',icons:[
+        {src:makeIcon(192,'🏠'),sizes:'192x192',type:'image/png',purpose:'any maskable'},
+        {src:makeIcon(512,'🏠'),sizes:'512x512',type:'image/png',purpose:'any maskable'}
+      ]};
+    var blob=new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
+    var murl=URL.createObjectURL(blob);
+    var link=document.createElement('link');link.rel='manifest';link.href=murl;
+    document.head.appendChild(link);
+    var apl=document.createElement('link');apl.rel='apple-touch-icon';apl.href=makeIcon(180,'🏠');
+    document.head.appendChild(apl);
+    var fav=document.createElement('link');fav.rel='icon';fav.type='image/png';fav.href=makeIcon(64,'🏠');
+    document.head.appendChild(fav);
+  }catch(e){}
+  // service worker：仅 http/https 下尝试注册（文件协议不支持），blob 注册可能受限则静默失败
+  if('serviceWorker' in navigator && location.protocol.indexOf('http')===0){
+    try{
+      var swCode='self.addEventListener("install",function(e){self.skipWaiting();});'+
+        'self.addEventListener("activate",function(e){self.clients.claim();});'+
+        'self.addEventListener("fetch",function(e){e.respondWith(fetch(e.request).catch(function(){return caches.match(e.request);}));});';
+      var swBlob=new Blob([swCode],{type:'application/javascript'});
+      var swURL=URL.createObjectURL(swBlob);
+      navigator.serviceWorker.register(swURL).catch(function(){/* 静默：单文件已自带离线能力 */});
+    }catch(e){}
+  }
+}
+
+/* ---------- 启动 ---------- */
+seed();
+setupPWA();
+var initRoute=(location.hash||'').replace('#','');
+navigate(routes.indexOf(initRoute)>=0?initRoute:'overview');
+
+})();
+</script>
+</body>
+</html>
