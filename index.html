@@ -17,7 +17,8 @@
 <meta name="application-name" content="生活台">
 <meta name="description" content="个人日常生活记录工作台：概览/随笔/待办/记账/学习/收藏/运动/精选/设置，本地存储，PWA 可添加到手机主屏幕。">
 
-<!-- manifest 与 apple-touch-icon 由脚本运行时用 Blob/canvas 生成注入，保持单文件 -->
+<!-- manifest 由脚本运行时注入；apple-touch-icon 静态内联（HelloKitty 图标），确保 iOS「添加到主屏幕」稳定显示图标 -->
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAD8klEQVR42u3dy20UQRQF0ArHS3ZsvGZNJsRBJkTBmnDIYMCSQRbuaabn0/3qvnOlu7Ol8qujkt1dtsconh9fv5y0VocACzzACjjECjfICjbIGg/bBmkMbJuiEahthMbANnyNQW3oGoPasDUGtSFrDGrD1RjUhqoxqA1TY1AbokahNkCNAW14GoPa0DQKtYFpDGjD0ijUBqUxoA1Jo1AbkMaANhyNQm0wCrRqRdCGstyXWM+EqA1kGU9F0FADfTWcqqChBvoqNJXwVF1XOdCGsY6mMmioF1AbxHksVeBUXx/Qk2GeATTUQJ+2xDqBjsF8K5ZbP3evdQLdBPISlEfmEesFGuaIAA0z1LOChhlqoEEGG+gL+/x8+vb0BDPUE4N+RXyuMENdG/RvwG+7hvkv6j8fDzPUh4P+B/BWzO9Qvy3MUO8CegXxNZhXUb9WwB57An40aMChHnsC3hs04P1Qjz0B34r5HqgBz0Y9jjqdjzihIc6HPfb+vvko0NIDtR8KJQr1OOJx3V2fQ4MMdZXn0Fe9KQQZ7MpvCi9BDTG8Ne9ybDixncZQT3s5yQ96UOdcH70EsktHUE93wX/lJp1APfVvrLgSCnTs7xQK1DGgBeoY0AI10AI0zJKEesAsSaiBFqBhlqqogRagYZaqqAfMkoQaaAEaZqmKGmgBGmgBGmaogRagJwEtUAMtQAMtQMMsk6IGWoAGWoAGGuhE0AI10Dvl08cPU4Kpvm6gd8ZwrtURz7JuoAugqIx6tnXHggaj77qBBgNooO+LoiKOWdcNtJPOCQ000EADDTTQOS9VPIcGOva1tzeFQLvHIUAL0EAL0JVAizihBWaga+bn989AAz0/4nMFGugYzB1RAw000EADDTTQh2DuhhpoJzTQQAMNNNBAAw2059BAt35b2PlNoT80I0ADLUADLUBDLTUxAy1AAy1AAw20/1MoMAMtQAMtQEMt5TADLUBDLVUxAy1AAy1AQw0z0AL0pKChhjkONNQwAy1AVwYNNcxAC9CVQUMNcxxoqGEGWoCuDBpqmONAQw1zHGioYd4E+iVAC9BQwww01DADDTXMuaChhjkONNQwx4GGGuY40FDDvAgaaonCPDtosHtDjgUNdV/MsaCh7on5Heg01GD3gbyIORE01D0wtwINdjbkVdDpqLvCTt/TsZb0L74b6g77Of6XDkNIh91lD8cl6TKMNNwd921cmo7DmRV2170aW9J1SLPgtj8bQUNdC7j534gZ6mOBm+8DMAN9X/zmUAA01BqFGWqNwwy1xmGGWuMwQ61xmKHWOMxQaxxmqDUOM9gaBxlqjcQMtsZBBlsjIYOtkZDh1kjEgAO8V34BC2CaTnxtb/0AAAAASUVORK5CYII=">
 <style>
 /* ============ 设计变量：暖米温馨、低饱和、护眼 ============ */
 :root{
@@ -206,14 +207,14 @@ input:focus,textarea:focus,select:focus{outline:2px solid var(--accent-soft);bor
     </div>
   </div>
   <nav class="nav" id="nav">
-    <div class="nav-item active" data-route="overview"><span class="ico">📊</span><span>生活概览</span></div>
-    <div class="nav-item" data-route="notes"><span class="ico">📝</span><span>日常随笔</span></div>
+    <div class="nav-item active" data-route="overview"><span class="ico">🏠</span><span>首页</span></div>
     <div class="nav-item" data-route="todos"><span class="ico">📅</span><span>日程待办</span></div>
+    <div class="nav-item" data-route="fitness"><span class="ico">🏋️</span><span>运动饮食</span></div>
     <div class="nav-item" data-route="accounting"><span class="ico">💰</span><span>收支记账</span></div>
+    <div class="nav-item" data-route="picks"><span class="ico">✨</span><span>每日精选</span></div>
+    <div class="nav-item" data-route="notes"><span class="ico">📝</span><span>日常随笔</span></div>
     <div class="nav-item" data-route="study"><span class="ico">📚</span><span>学习笔记</span></div>
     <div class="nav-item" data-route="favorites"><span class="ico">📂</span><span>常用收藏</span></div>
-    <div class="nav-item" data-route="fitness"><span class="ico">🏃</span><span>运动减肥</span></div>
-    <div class="nav-item" data-route="picks"><span class="ico">✨</span><span>每日精选</span></div>
     <div class="nav-item" data-route="settings"><span class="ico">⚙️</span><span>设置</span></div>
   </nav>
   <div class="sidebar-foot">本地存储 · 无后端<br>v1.0</div>
@@ -280,13 +281,15 @@ function seed(){
     {id:uid(),text:'周末采购下周食材清单',date:dayOffset(6),done:false}
   ]);
   save(K.accounting,[
-    {id:uid(),date:dayOffset(-5),type:'收入',amount:800,category:'副业稿费',note:'某平台稿费到账'},
-    {id:uid(),date:dayOffset(-4),type:'支出',amount:156.5,category:'生活采购',note:'超市：番茄鸡蛋牛奶'},
-    {id:uid(),date:dayOffset(-3),type:'支出',amount:32,category:'餐饮',note:'下午咖啡'},
-    {id:uid(),date:dayOffset(-2),type:'支出',amount:50,category:'通讯',note:'话费充值'},
-    {id:uid(),date:dayOffset(-1),type:'收入',amount:23.6,category:'理财',note:'货币基金利息'},
-    {id:uid(),date:dayOffset(-1),type:'支出',amount:28,category:'餐饮',note:'工作日午餐'},
-    {id:uid(),date:t,type:'支出',amount:24.5,category:'交通',note:'打车通勤'}
+    {id:uid(),date:dayOffset(-9),type:'收入',amount:12000,category:'工资',app:'银行卡',hongbao:false,note:'上月工资到账'},
+    {id:uid(),date:dayOffset(-7),type:'支出',amount:239,category:'餐饮',app:'美团',hongbao:false,note:'周末朋友聚餐'},
+    {id:uid(),date:dayOffset(-6),type:'支出',amount:59.9,category:'日用',app:'淘宝',hongbao:false,note:'洗衣液+纸巾'},
+    {id:uid(),date:dayOffset(-5),type:'收入',amount:88,category:'红包',app:'微信',hongbao:true,note:'朋友结婚回礼红包'},
+    {id:uid(),date:dayOffset(-4),type:'支出',amount:6.5,category:'交通',app:'支付宝',hongbao:false,note:'地铁通勤'},
+    {id:uid(),date:dayOffset(-3),type:'支出',amount:128,category:'餐饮',app:'美团',hongbao:false,note:'两顿外卖'},
+    {id:uid(),date:dayOffset(-2),type:'收入',amount:200,category:'红包',app:'微信',hongbao:true,note:'长辈给的红包'},
+    {id:uid(),date:dayOffset(-1),type:'支出',amount:35,category:'娱乐',app:'支付宝',hongbao:false,note:'视频会员续费'},
+    {id:uid(),date:t,type:'支出',amount:18.8,category:'餐饮',app:'微信',hongbao:false,note:'早餐'}
   ]);
   save(K.study,[
     {id:uid(),title:'费曼学习法',content:'能用最简单的话向新人讲明白，才算真懂。试着把新知识讲给「橡皮鸭」听，卡壳的地方就是没懂的地方。',date:dayOffset(-6)},
@@ -305,13 +308,14 @@ function seed(){
     {id:uid(),name:'Remove.bg 一键抠图',url:'https://www.remove.bg',category:'工具'}
   ]);
   save(K.fitness,[
-    {id:uid(),date:dayOffset(-6),type:'跑步',duration:30,weight:76.2},
-    {id:uid(),date:dayOffset(-5),type:'跳绳',duration:20,weight:76.0},
-    {id:uid(),date:dayOffset(-4),type:'休息',duration:0,weight:75.8},
-    {id:uid(),date:dayOffset(-3),type:'跑步',duration:35,weight:75.5},
-    {id:uid(),date:dayOffset(-2),type:'力量训练',duration:40,weight:75.3},
-    {id:uid(),date:dayOffset(-1),type:'跑步',duration:25,weight:75.1},
-    {id:uid(),date:t,type:'快走',duration:45,weight:74.9}
+    {id:uid(),kind:'weight',date:dayOffset(-6),weight:80.5},
+    {id:uid(),kind:'train',date:dayOffset(-6),day:'A',name:'推（胸肩三头）',done:true},
+    {id:uid(),kind:'train',date:dayOffset(-5),day:'B',name:'拉（背二头）',done:true},
+    {id:uid(),kind:'weight',date:dayOffset(-4),weight:80.2},
+    {id:uid(),kind:'train',date:dayOffset(-3),day:'C',name:'腿（股四腘绳核心）',done:true},
+    {id:uid(),kind:'weight',date:dayOffset(-2),weight:79.8},
+    {id:uid(),kind:'train',date:dayOffset(-1),day:'A',name:'推（胸肩三头）',done:true},
+    {id:uid(),kind:'weight',date:t,weight:79.5}
   ]);
   save(K.picks,[
     {id:uid(),type:'影',title:'《奥本海默》',note:'诺兰的视听盛宴，三小时不觉得长，值得二刷。',date:dayOffset(-7)},
@@ -336,7 +340,7 @@ var D={
 };
 
 /* ---------- 路由 ---------- */
-var routes=['overview','notes','todos','accounting','study','favorites','fitness','picks','settings'];
+var routes=['overview','todos','fitness','accounting','picks','notes','study','favorites','settings'];
 function navigate(route){
   if(routes.indexOf(route)<0) route='overview';
   var pages=document.querySelectorAll('.page');
@@ -373,7 +377,7 @@ render.overview=function(){
   var weekCount=0; fit.forEach(function(f){if(f.date>=dayOffset(-6)&&f.type!=='休息')weekCount++;});
   var latestW = fit.length? fit[fit.length-1].weight : '--';
 
-  var h=head('📊','生活概览','你的日常，一目了然');
+  var h=head('🏠','首页','你的日常，一目了然');
 
   // 今天要处理
   var th='<div class="today-box"><h2>📌 今天要处理</h2>';
@@ -476,42 +480,87 @@ render.todos=function(){
   document.getElementById('page-todos').innerHTML=h+form+'<div class="card">'+body+'</div>';
 };
 
-/* 4. 记账 */
+/* 4. 记账（增强：统计看板 + 分类/APP/红包维度） */
 render.accounting=function(){
   var list=D.accounting().slice().reverse();
   var mo=nowMonth();
   var inc=0,exp=0;
   D.accounting().forEach(function(a){if(a.date.slice(0,7)===mo){if(a.type==='收入')inc+=a.amount;else exp+=a.amount;}});
   var h=head('💰','收支记账','收入绿、支出红，国内习惯');
+
+  // 顶部统计看板：本月收入 / 本月支出 / 本月结余
   var sum='<div class="card"><div class="row-between">'+
-    '<div><div class="muted" style="font-size:12px">'+mo.slice(5)+'月收入</div><div class="amt in">+¥'+fmt(inc)+'</div></div>'+
-    '<div><div class="muted" style="font-size:12px">'+mo.slice(5)+'月支出</div><div class="amt out">-¥'+fmt(exp)+'</div></div>'+
+    '<div><div class="muted" style="font-size:12px">本月收入</div><div class="amt in">+¥'+fmt(inc)+'</div></div>'+
+    '<div><div class="muted" style="font-size:12px">本月支出</div><div class="amt out">-¥'+fmt(exp)+'</div></div>'+
     '<div><div class="muted" style="font-size:12px">本月结余</div><div class="amt" style="color:'+(inc-exp>=0?'var(--income)':'var(--expense)')+'">¥'+fmt(inc-exp)+'</div></div>'+
     '</div></div>';
+
+  // 分类统计维度
+  var catExp={}, appExp={}, hbIn=0, hbOut=0;
+  D.accounting().forEach(function(a){
+    if(a.date.slice(0,7)!==mo) return;
+    if(a.type==='支出'){
+      catExp[a.category||'其他']=(catExp[a.category||'其他']||0)+a.amount;
+      appExp[a.app||'其他']=(appExp[a.app||'其他']||0)+a.amount;
+    }
+    if(a.hongbao){ if(a.type==='收入') hbIn+=a.amount; else hbOut+=a.amount; }
+  });
+  function bars(m){
+    var keys=Object.keys(m).sort(function(a,b){return m[b]-m[a];});
+    if(!keys.length) return '<div class="muted" style="font-size:12px">本月暂无支出记录</div>';
+    var total=0; keys.forEach(function(k){total+=m[k];});
+    var s='';
+    keys.forEach(function(k){
+      var v=m[k]; var pct=total?Math.round(v/total*100):0;
+      s+='<div style="margin:7px 0">'+
+        '<div class="row-between"><span>'+esc(k)+'</span><span class="amt out">¥'+fmt(v)+' · '+pct+'%</span></div>'+
+        '<div style="height:8px;background:var(--accent-soft);border-radius:6px;overflow:hidden;margin-top:3px">'+
+        '<div style="height:100%;width:'+pct+'%;background:var(--accent)"></div></div></div>';
+    });
+    return s;
+  }
+  var statCard='<div class="card">'+
+    '<div class="card-title">📊 本月分类统计</div>'+
+    '<div class="group-label">💼 按消费类别（支出）</div>'+bars(catExp)+
+    '<div class="group-label">📱 按消费 APP（支出）</div>'+bars(appExp)+
+    '<div class="group-label">🧧 红包收支</div>'+
+    '<div class="row-between"><span class="muted" style="font-size:12px">红包收入</span><span class="amt in">+¥'+fmt(hbIn)+'</span></div>'+
+    '<div class="row-between"><span class="muted" style="font-size:12px">红包支出</span><span class="amt out">-¥'+fmt(hbOut)+'</span></div>'+
+    '</div>';
+
+  // 录入表单（新增：所属 APP、红包标记）
   var form='<div class="form-card"><div class="inline-form">'+
     '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">类型</label>'+
     '<div class="seg" id="acc-seg"><button class="on" data-v="支出">💸 支出</button><button data-v="收入">💵 收入</button></div></div>'+
     '<div class="grow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">金额</label>'+
     '<input type="number" id="acc-amount" placeholder="0.00" step="0.01" inputmode="decimal"></div>'+
-    '<div class="grow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">分类</label>'+
+    '<div class="grow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">消费类别</label>'+
     '<input type="text" id="acc-cat" placeholder="餐饮/交通/工资…" maxlength="10"></div>'+
+    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">所属 APP</label>'+
+    '<select id="acc-app"><option>微信</option><option>支付宝</option><option>美团</option><option>淘宝</option><option>银行卡</option><option>现金</option><option>其他</option></select></div>'+
     '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">日期</label>'+
     '<input type="date" id="acc-date" value="'+today+'"></div>'+
     '<div class="grow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">备注</label>'+
     '<input type="text" id="acc-note" placeholder="可填可不填" maxlength="30"></div>'+
+    '<div style="display:flex;align-items:flex-end"><label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);min-height:44px;cursor:pointer">'+
+    '<input type="checkbox" id="acc-hb" style="width:18px;height:18px"> 🧧 红包</label></div>'+
     '<button class="btn" data-act="add-acc">＋ 记账</button></div></div>';
+
   var body='';
   if(!list.length) body='<div class="empty-hint">还没有记录，记第一笔吧 💰</div>';
   list.forEach(function(a){
     var cls=a.type==='收入'?'in':'out';
     var sign=a.type==='收入'?'+':'-';
+    var tags='';
+    if(a.app) tags+=' · <span class="tag">'+esc(a.app)+'</span>';
+    if(a.hongbao) tags+=' <span class="tag red">🧧红包</span>';
     body+='<div class="list-item"><div class="li-main">'+
       '<div class="li-title">'+esc(a.category||'未分类')+(a.note?' · <span class="muted">'+esc(a.note)+'</span>':'')+'</div>'+
-      '<div class="li-meta">'+a.type+' · 📅 '+a.date+'</div></div>'+
+      '<div class="li-meta">'+a.type+tags+' · 📅 '+a.date+'</div></div>'+
       '<div class="amt '+cls+'">'+sign+'¥'+fmt(a.amount)+'</div>'+
       '<button class="btn sm ghost" data-act="del-acc" data-id="'+a.id+'">删除</button></div>';
   });
-  document.getElementById('page-accounting').innerHTML=h+sum+form+'<div class="card">'+body+'</div>';
+  document.getElementById('page-accounting').innerHTML=h+sum+statCard+form+'<div class="card">'+body+'</div>';
 };
 
 /* 5. 学习 */
@@ -564,62 +613,190 @@ render.favorites=function(){
   document.getElementById('page-favorites').innerHTML=h+form+'<div class="card">'+body+'</div>';
 };
 
-/* 7. 运动 */
+/* 7. 运动饮食（原运动减肥，重命名为运动饮食） */
 render.fitness=function(){
   var list=D.fitness();
-  var h=head('🏃','运动减肥','打卡 + 体重趋势');
-  // 统计
-  var weekCount=0; list.forEach(function(f){if(f.date>=dayOffset(-6)&&f.type!=='休息')weekCount++;});
-  var latest=list.length?list[list.length-1].weight:'--';
-  var first=list.length?list[0].weight:null;
-  var delta = (first!=null && latest!=='--')?(latest-first):0;
-  var stat='<div class="card"><div class="row-between">'+
-    '<div><div class="muted" style="font-size:12px">本周运动</div><div class="s-num" style="font-size:20px">'+weekCount+'次</div></div>'+
-    '<div><div class="muted" style="font-size:12px">当前体重</div><div class="s-num" style="font-size:20px">'+latest+'kg</div></div>'+
-    '<div><div class="muted" style="font-size:12px">累计变化</div><div class="s-num" style="font-size:20px;color:'+(delta<=0?'var(--income)':'var(--expense)')+'">'+(delta<=0?'':'+')+fmt(delta)+'kg</div></div>'+
-    '</div></div>';
-  // 体重迷你柱状图（CSS div）
-  var recent=list.slice(-7);
-  var weights=recent.map(function(f){return Number(f.weight)||0;}).filter(function(n){return n>0;});
-  var mn=Math.min.apply(null,weights.length?weights:[0]), mx=Math.max.apply(null,weights.length?weights:[1]);
-  if(mx-mn<1) mx=mn+1;
-  var chart='<div class="card"><div class="card-title">📈 体重趋势（近'+recent.length+'次）</div><div class="bar-chart">';
-  recent.forEach(function(f){
-    var v=Number(f.weight)||0; var ratio=(v-mn)/(mx-mn);
-    var h2=Math.max(4,Math.round(ratio*56));
-    chart+='<div class="bar-col"><div class="bar" style="height:'+h2+'px" title="'+f.weight+'kg"></div>'+
-      '<div class="bar-label">'+f.weight+'</div></div>';
-  });
-  chart+='</div><div class="muted" style="font-size:11px;text-align:center;margin-top:4px">柱越高 = 体重越重，越矮越好 🎯</div></div>';
+  var h=head('🏋️','运动饮食','三分化训练 + 饮食方案 + 打卡');
 
-  var form='<div class="form-card"><div class="inline-form">'+
-    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">项目</label>'+
-    '<select id="fit-type"><option>跑步</option><option>跳绳</option><option>力量训练</option><option>快走</option><option>骑行</option><option>休息</option><option>其他</option></select></div>'+
-    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">时长(分)</label>'+
-    '<input type="number" id="fit-dur" placeholder="0" inputmode="numeric" style="width:90px"></div>'+
-    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">体重(kg)</label>'+
-    '<input type="number" id="fit-w" placeholder="'+latest+'" step="0.1" inputmode="decimal" style="width:100px"></div>'+
+  // 用户身体数据：身高170cm，默认体重 80kg（160斤）
+  var HEIGHT=170;
+  var latestW=null;
+  for(var i=list.length-1;i>=0;i--){ if(list[i].kind==='weight'){latestW=list[i].weight;break;} }
+  if(latestW==null) latestW=80.0;
+  var bmi=latestW/Math.pow(HEIGHT/100,2);
+  var bmiTip = bmi>=28?'偏胖，建议循序渐进减脂':(bmi>=24?'超重，注意控制':'正常范围');
+  var bodyData='<div class="card"><div class="card-title">🧍 我的身体数据</div><div class="row-between">'+
+    '<div><div class="muted" style="font-size:12px">身高</div><div class="s-num" style="font-size:20px">170 cm</div></div>'+
+    '<div><div class="muted" style="font-size:12px">当前体重</div><div class="s-num" style="font-size:20px">'+latestW+' kg</div></div>'+
+    '<div><div class="muted" style="font-size:12px">BMI</div><div class="s-num" style="font-size:20px">'+bmi.toFixed(1)+'</div></div>'+
+    '<div><div class="muted" style="font-size:12px">评估</div><div class="s-num" style="font-size:15px;color:var(--accent)">'+bmiTip+'</div></div>'+
+    '</div><div class="muted" style="font-size:11px;margin-top:6px">BMI = 体重(kg) ÷ 身高(m)²，健康区间 18.5–23.9</div></div>';
+
+  // 体重迷你柱状图（基于体重打卡）
+  var wLogs=list.filter(function(f){return f.kind==='weight';});
+  var chart='';
+  if(wLogs.length){
+    var recent=wLogs.slice(-7);
+    var weights=recent.map(function(f){return Number(f.weight)||0;}).filter(function(n){return n>0;});
+    var mn=Math.min.apply(null,weights.length?weights:[0]), mx=Math.max.apply(null,weights.length?weights:[1]);
+    if(mx-mn<1) mx=mn+1;
+    chart='<div class="card"><div class="card-title">📈 体重趋势（近'+recent.length+'次打卡）</div><div class="bar-chart">';
+    recent.forEach(function(f){
+      var v=Number(f.weight)||0; var ratio=(v-mn)/(mx-mn);
+      var h2=Math.max(4,Math.round(ratio*56));
+      chart+='<div class="bar-col"><div class="bar" style="height:'+h2+'px" title="'+f.weight+'kg"></div>'+
+        '<div class="bar-label">'+f.weight+'</div></div>';
+    });
+    chart+='</div><div class="muted" style="font-size:11px;text-align:center;margin-top:4px">柱越矮 = 体重越轻，趋势向下更棒 🎯</div></div>';
+  }
+
+  // 打卡表单：体重录入 + 训练打卡
+  var weightForm='<div class="form-card"><div class="card-title">⚖️ 体重打卡</div><div class="inline-form">'+
     '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">日期</label>'+
-    '<input type="date" id="fit-date" value="'+today+'"></div>'+
-    '<button class="btn" data-act="add-fit">＋ 打卡</button></div></div>';
+    '<input type="date" id="weight-date" value="'+today+'"></div>'+
+    '<div class="grow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">体重(kg)</label>'+
+    '<input type="number" id="weight-input" placeholder="'+latestW+'" step="0.1" inputmode="decimal"></div>'+
+    '<button class="btn" data-act="add-weight">＋ 记录体重</button></div></div>';
+  var trainForm='<div class="form-card"><div class="card-title">💪 训练打卡</div><div class="inline-form">'+
+    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">训练日</label>'+
+    '<select id="train-day"><option value="A">A 推（胸肩三头）</option><option value="B">B 拉（背二头）</option><option value="C">C 腿（股四腘绳核心）</option></select></div>'+
+    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">日期</label>'+
+    '<input type="date" id="train-date" value="'+today+'"></div>'+
+    '<button class="btn" data-act="add-train">✅ 完成打卡</button></div></div>';
 
-  var body='<div class="group-label">📋 打卡记录</div>';
-  if(!list.length) body+='<div class="empty-hint">还没有记录，打个卡吧 🏃</div>';
-  list.slice().reverse().forEach(function(f){
-    body+='<div class="list-item"><div class="li-main">'+
-      '<div class="li-title">'+esc(f.type)+' · '+(f.duration?f.duration+'分钟':'休息日')+(f.weight?' · 当前 '+f.weight+'kg':'')+'</div>'+
-      '<div class="li-meta">📅 '+f.date+'</div></div>'+
-      '<button class="btn sm ghost" data-act="del-fit" data-id="'+f.id+'">删除</button></div>';
+  // 谭成义三分化训练方案（展示）
+  var plan=[
+    {day:'A · 推（胸 / 肩 / 肱三头）',items:[
+      ['平板杠铃卧推','4 × 8-10','组间 90s'],
+      ['上斜哑铃推举','3 × 10-12','组间 75s'],
+      ['坐姿哑铃肩推','3 × 10-12','组间 75s'],
+      ['绳索夹胸','3 × 12-15','组间 60s'],
+      ['绳索三头下压','3 × 12-15','组间 60s']
+    ]},
+    {day:'B · 拉（背 / 肱二头）',items:[
+      ['引体向上（或高位下拉）','4 × 8-10','组间 90s'],
+      ['杠铃俯身划船','4 × 8-10','组间 90s'],
+      ['坐姿绳索划船','3 × 10-12','组间 75s'],
+      ['哑铃弯举','3 × 12-15','组间 60s'],
+      ['锤式弯举','3 × 12-15','组间 60s']
+    ]},
+    {day:'C · 腿（股四 / 腘绳 / 核心）',items:[
+      ['杠铃深蹲','4 × 8-10','组间 120s'],
+      ['腿举','3 × 12-15','组间 90s'],
+      ['罗马尼亚硬拉','3 × 10-12','组间 90s'],
+      ['俯卧腿弯举','3 × 12-15','组间 60s'],
+      ['站姿提踵','4 × 15-20','组间 45s'],
+      ['卷腹 / 平板支撑','3 组','组间 45s']
+    ]}
+  ];
+  var planCard='<div class="card"><div class="card-title">🏋️ 谭成义三分化训练方案</div>'+
+    '<div class="muted" style="font-size:12px;margin-bottom:8px">每周练 3 天（如 A-B-C-休-A-B…），分化训练高效增肌减脂。动作/组次参考谭成义教程思路，量力而行。<span class="tag">练完到上方「训练打卡」勾选</span></div>';
+  plan.forEach(function(p){
+    planCard+='<div class="group-label">🔥 '+esc(p.day)+'</div>';
+    p.items.forEach(function(it){
+      planCard+='<div class="list-item" style="border:none;padding:8px 0">'+
+        '<div class="li-main"><div class="li-title">'+esc(it[0])+'</div>'+
+        '<div class="li-meta">'+esc(it[1])+' · ⏱ '+esc(it[2])+'</div></div></div>';
+    });
   });
-  document.getElementById('page-fitness').innerHTML=h+stat+chart+form+'<div class="card">'+body+'</div>';
+  planCard+='</div>';
+
+  // 配套饮食方案（展示）
+  var dietCard='<div class="card"><div class="card-title">🍱 配套饮食方案（参考谭成义教程）</div>'+
+    '<div class="group-label">🔢 每日热量参考</div>'+
+    '<div class="muted" style="font-size:12.5px">身高170/体重约80kg、轻活动量者，减脂期建议 <b>1800–2000 kcal/天</b>（TDEE≈2200–2400，制造 300–500 缺口）；蛋白质 <b>1.6–2.0 g/kg</b> ≈ 130–160 g/天，优先保肌。</div>'+
+    '<div class="group-label">🍽 三餐模板</div>'+
+    '<div class="list-item" style="border:none;padding:8px 0"><div class="li-main"><div class="li-title">🌅 早餐（约400-500 kcal）</div><div class="li-meta">2个鸡蛋 + 全麦面包1-2片 + 无糖豆浆/牛奶 + 少量坚果</div></div></div>'+
+    '<div class="list-item" style="border:none;padding:8px 0"><div class="li-main"><div class="li-title">☀️ 午餐（约600-700 kcal）</div><div class="li-meta">糙米/杂粮饭1拳 + 鸡胸/鱼/瘦牛肉1.5拳 + 蔬菜2拳</div></div></div>'+
+    '<div class="list-item" style="border:none;padding:8px 0"><div class="li-main"><div class="li-title">🌙 晚餐（约500-600 kcal）</div><div class="li-meta">红薯/玉米1拳 + 豆腐/虾 + 大量蔬菜；训练后可加一份希腊酸奶</div></div></div>'+
+    '<div class="group-label">⚠️ 饮食禁忌与要点</div>'+
+    '<div class="muted" style="font-size:12.5px;line-height:1.8">'+
+    '• 少油少糖，戒含糖饮料与奶茶<br>'+
+    '• 保证蛋白质，避免纯节食掉肌肉<br>'+
+    '• 训练日碳水略高、休息日略低（碳循环）<br>'+
+    '• 每天喝水 2L+，睡眠 7-8 小时<br>'+
+    '• 早晨空腹固定称重，看趋势而非单日波动<br>'+
+    '• 循序渐进加重，动作标准优先防受伤</div>'+
+    '</div>';
+
+  // 打卡记录列表
+  var body='<div class="group-label">📋 我的打卡记录</div>';
+  if(!list.length) body+='<div class="empty-hint">还没有记录，打个卡吧 🏋️</div>';
+  list.slice().reverse().forEach(function(f){
+    if(f.kind==='weight'){
+      body+='<div class="list-item"><div class="li-main">'+
+        '<div class="li-title">⚖️ 体重 '+esc(f.weight)+' kg</div>'+
+        '<div class="li-meta">📅 '+f.date+'</div></div>'+
+        '<button class="btn sm ghost" data-act="del-fit" data-id="'+f.id+'">删除</button></div>';
+    } else {
+      body+='<div class="list-item"><div class="li-main">'+
+        '<div class="li-title">✅ 训练完成 · '+esc(f.name||f.day)+'</div>'+
+        '<div class="li-meta">📅 '+f.date+'</div></div>'+
+        '<button class="btn sm ghost" data-act="del-fit" data-id="'+f.id+'">删除</button></div>';
+    }
+  });
+  document.getElementById('page-fitness').innerHTML=h+bodyData+chart+weightForm+trainForm+planCard+dietCard+'<div class="card">'+body+'</div>';
 };
 
-/* 8. 精选 */
+/* 8. 精选：改为前端动态 RSS 资讯 + 保留手动收藏 */
+var PICK_TABS=[
+  {key:'headline',ico:'📰',name:'每日头条',feeds:['https://sspai.com/feed','https://www.ithome.com/rss/']},
+  {key:'finance',ico:'💹',name:'财经',feeds:['https://36kr.com/feed','https://www.huxiu.com/rss/0.xml']},
+  {key:'money',ico:'🏦',name:'金融',feeds:['https://www.huxiu.com/rss/0.xml','https://36kr.com/feed']},
+  {key:'ai',ico:'🤖',name:'AI动向',feeds:['https://www.qbitai.com/feed','https://www.jiqizhixin.com/feed']}
+];
+var currentPickTab='headline';
+function pickText(el,tag){var n=el.querySelector(tag);return n?n.textContent.trim():'';}
+function pickStrip(s){if(!s)return '';var d=document.createElement('div');d.innerHTML=s;var t=(d.textContent||'').replace(/\s+/g,' ').trim();return t.length>90?t.slice(0,90)+'…':t;}
+function fetchRSS(rssUrl){
+  return fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(rssUrl))
+    .then(function(r){if(!r.ok)throw new Error('http'+r.status);return r.text();})
+    .then(function(xml){
+      var doc=new DOMParser().parseFromString(xml,'text/xml');
+      var items=doc.querySelectorAll('item, entry');
+      var arr=[];
+      for(var i=0;i<items.length && arr.length<12;i++){
+        var it=items[i];
+        var title=pickText(it,'title');
+        var link=pickText(it,'link');
+        if(!link && it.querySelector('link')) link=it.querySelector('link').getAttribute('href')||'';
+        var desc=pickText(it,'description')||pickText(it,'summary')||pickText(it,'content')||'';
+        arr.push({title:title,link:link,desc:pickStrip(desc)});
+      }
+      return arr;
+    });
+}
+function loadPickFeed(tabKey){
+  var tab=null;for(var i=0;i<PICK_TABS.length;i++){if(PICK_TABS[i].key===tabKey)tab=PICK_TABS[i];}
+  var box=document.getElementById('pick-feed');if(!box||!tab)return;
+  box.innerHTML='<div class="empty-hint">⏳ 正在获取「'+esc(tab.name)+'」资讯…</div>';
+  var tried=0;
+  function tryNext(){
+    if(tried>=tab.feeds.length){box.innerHTML='<div class="empty-hint">⚠️ 无法获取资讯（网络受限或源不可用），请检查网络后重试。</div>';return;}
+    var url=tab.feeds[tried++];
+    fetchRSS(url).then(function(items){
+      if(!items.length){tryNext();return;}
+      var h='';
+      items.forEach(function(it){
+        var href=it.link?it.link:'#';
+        h+='<a class="card" href="'+esc(href)+'" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit">'+
+          '<div class="row-between"><div class="card-title">'+tab.ico+' '+esc(it.title||'无标题')+'</div><span class="muted">↗</span></div>'+
+          (it.desc?'<div class="muted" style="margin-top:4px;font-size:12.5px">'+esc(it.desc)+'</div>':'')+'</a>';
+      });
+      box.innerHTML=h;
+    }).catch(function(){tryNext();});
+  }
+  tryNext();
+}
 render.picks=function(){
   var list=D.picks().slice().reverse();
+  var h=head('✨','每日精选','动态资讯 + 手动收藏');
+  var tabs='<div class="page-tabs" id="pick-tabs">';
+  PICK_TABS.forEach(function(t){tabs+='<div class="pill'+(t.key===currentPickTab?' on':'')+'" data-pick="'+t.key+'">'+t.ico+' '+t.name+'</div>';});
+  tabs+='</div>';
+  var feedBox='<div id="pick-feed"><div class="empty-hint">⏳ 正在加载资讯…</div></div>';
   var types=['影','音','文','物','书','剧','其他'];
-  var h=head('✨','每日精选','影音好文好物推荐');
-  var form='<div class="form-card"><div class="inline-form">'+
+  var form='<div class="form-card"><div class="card-title">✍️ 手动添加精选</div><div class="inline-form">'+
     '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">类型</label>'+
     '<select id="pick-type">'+types.map(function(t){return '<option>'+t+'</option>';}).join('')+'</select></div>'+
     '<div class="grow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">标题</label>'+
@@ -629,16 +806,17 @@ render.picks=function(){
     '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">日期</label>'+
     '<input type="date" id="pick-date" value="'+today+'"></div>'+
     '<button class="btn" data-act="add-pick">＋ 收藏</button></div></div>';
-  var body='';
-  if(!list.length) body='<div class="empty-hint">还没有精选，记一条吧 ✨</div>';
+  var manual='<div class="group-label">📌 我的收藏（本地手动添加）</div>';
+  if(!list.length) manual+='<div class="empty-hint">还没有手动精选，加一条吧 ✨</div>';
   list.forEach(function(p){
-    body+='<div class="card"><div class="row-between">'+
+    manual+='<div class="card"><div class="row-between">'+
       '<div class="card-title">'+p.type+' · '+esc(p.title)+'</div>'+
       '<button class="btn sm ghost" data-act="del-pick" data-id="'+p.id+'">删除</button></div>'+
       '<div style="margin-top:4px">'+esc(p.note)+'</div>'+
       '<div class="li-meta" style="margin-top:8px">📅 '+p.date+'</div></div>';
   });
-  document.getElementById('page-picks').innerHTML=h+form+body;
+  document.getElementById('page-picks').innerHTML=h+tabs+feedBox+form+manual;
+  loadPickFeed(currentPickTab);
 };
 
 /* 9. 设置 */
@@ -676,15 +854,15 @@ function addTodo(){var t=g('todo-text').value.trim();var d=g('todo-date').value|
 function delTodo(id){var a=D.todos().filter(function(t){return t.id!==id;});save(K.todos,a);render.todos();}
 function toggleTodo(id){var a=D.todos();a.forEach(function(t){if(t.id===id)t.done=!t.done;});save(K.todos,a);render.todos();}
 var accType='支出';
-function addAcc(){var amt=parseFloat(g('acc-amount').value);var cat=g('acc-cat').value.trim()||'未分类';var note=g('acc-note').value.trim();var date=g('acc-date').value||todayStr();if(!amt||amt<=0){g('acc-amount').focus();return;}var a=D.accounting();a.push({id:uid(),date:date,type:accType,amount:amt,category:cat,note:note});save(K.accounting,a);render.accounting();}
+function addAcc(){var amt=parseFloat(g('acc-amount').value);var cat=g('acc-cat').value.trim()||'未分类';var app=g('acc-app').value;var hb=g('acc-hb').checked;var note=g('acc-note').value.trim();var date=g('acc-date').value||todayStr();if(!amt||amt<=0){g('acc-amount').focus();return;}var a=D.accounting();a.push({id:uid(),date:date,type:accType,amount:amt,category:cat,app:app,hongbao:hb,note:note});save(K.accounting,a);render.accounting();}
 function delAcc(id){var a=D.accounting().filter(function(x){return x.id!==id;});save(K.accounting,a);render.accounting();}
 function addStudy(){var t=g('study-title').value.trim();var c=g('study-content').value.trim();if(!t||!c){g('study-title').focus();return;}var a=D.study();a.push({id:uid(),title:t,content:c,date:todayStr()});save(K.study,a);render.study();}
 function delStudy(id){var a=D.study().filter(function(s){return s.id!==id;});save(K.study,a);render.study();}
 function addFav(){var n=g('fav-name').value.trim();var u=g('fav-url').value.trim();var c=g('fav-cat').value.trim()||'其他';if(!n||!u){g('fav-name').focus();return;}var a=D.favorites();a.push({id:uid(),name:n,url:u,category:c});save(K.favorites,a);render.favorites();}
 function delFav(id){var a=D.favorites().filter(function(f){return f.id!==id;});save(K.favorites,a);render.favorites();}
-function addFit(){var ty=g('fit-type').value;var du=parseInt(g('fit-dur').value,10)||0;var w=parseFloat(g('fit-w').value);var date=g('fit-date').value||todayStr();if(isNaN(w)){w=list2lastWeight();}var a=D.fitness();a.push({id:uid(),date:date,type:ty,duration:du,weight:w});save(K.fitness,a);render.fitness();}
+function addWeight(){var w=parseFloat(g('weight-input').value);var date=g('weight-date').value||todayStr();if(!w||w<=0){g('weight-input').focus();return;}var a=D.fitness();a.push({id:uid(),kind:'weight',date:date,weight:w});save(K.fitness,a);render.fitness();}
+function addTrain(){var day=g('train-day').value;var date=g('train-date').value||todayStr();var names={'A':'推（胸肩三头）','B':'拉（背二头）','C':'腿（股四腘绳核心）'};var a=D.fitness();a.push({id:uid(),kind:'train',date:date,day:day,name:names[day],done:true});save(K.fitness,a);render.fitness();}
 function delFit(id){var a=D.fitness().filter(function(f){return f.id!==id;});save(K.fitness,a);render.fitness();}
-function list2lastWeight(){var f=D.fitness();return f.length?f[f.length-1].weight:'';}
 function addPick(){var ty=g('pick-type').value;var t=g('pick-title').value.trim();var n=g('pick-note').value.trim();var date=g('pick-date').value||todayStr();if(!t){g('pick-title').focus();return;}var a=D.picks();a.push({id:uid(),type:ty,title:t,note:n,date:date});save(K.picks,a);render.picks();}
 
 function exportJSON(){
@@ -727,6 +905,8 @@ function g(id){return document.getElementById(id);}
 
 /* ---------- 事件委托 ---------- */
 document.addEventListener('click',function(e){
+  var pk=e.target.closest('[data-pick]');
+  if(pk){currentPickTab=pk.dataset.pick;var pls=document.querySelectorAll('#pick-tabs .pill');for(var pi=0;pi<pls.length;pi++){pls[pi].classList.toggle('on',pls[pi].dataset.pick===currentPickTab);}loadPickFeed(currentPickTab);return;}
   var t=e.target.closest('[data-act],[data-go],[data-route]');
   if(!t) return;
   if(t.dataset.route){navigate(t.dataset.route);return;}
@@ -744,7 +924,8 @@ document.addEventListener('click',function(e){
     case 'del-study':delStudy(id);break;
     case 'add-fav':addFav();break;
     case 'del-fav':delFav(id);break;
-    case 'add-fit':addFit();break;
+    case 'add-weight':addWeight();break;
+    case 'add-train':addTrain();break;
     case 'del-fit':delFit(id);break;
     case 'add-pick':addPick();break;
     case 'del-pick':delPick(id);break;
@@ -794,16 +975,15 @@ function setupPWA(){
     var manifest={name:'个人生活工作台',short_name:'生活台',start_url:'.',scope:'.',
       display:'standalone',orientation:'any',background_color:'#F6F1EA',theme_color:'#C8896F',
       description:'个人日常生活记录工作台',icons:[
-        {src:makeIcon(192,'🏠'),sizes:'192x192',type:'image/png',purpose:'any maskable'},
-        {src:makeIcon(512,'🏠'),sizes:'512x512',type:'image/png',purpose:'any maskable'}
+        {src:makeIcon(192,'🐱'),sizes:'192x192',type:'image/png',purpose:'any maskable'},
+        {src:makeIcon(512,'🐱'),sizes:'512x512',type:'image/png',purpose:'any maskable'}
       ]};
     var blob=new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
     var murl=URL.createObjectURL(blob);
     var link=document.createElement('link');link.rel='manifest';link.href=murl;
     document.head.appendChild(link);
-    var apl=document.createElement('link');apl.rel='apple-touch-icon';apl.href=makeIcon(180,'🏠');
-    document.head.appendChild(apl);
-    var fav=document.createElement('link');fav.rel='icon';fav.type='image/png';fav.href=makeIcon(64,'🏠');
+    /* apple-touch-icon 已在 <head> 静态内联 HelloKitty 图标，此处不再重复注入，避免 iOS 抓取时被覆盖 */
+    var fav=document.createElement('link');fav.rel='icon';fav.type='image/png';fav.href=makeIcon(64,'🐱');
     document.head.appendChild(fav);
   }catch(e){}
   // service worker：仅 http/https 下尝试注册（文件协议不支持），blob 注册可能受限则静默失败
