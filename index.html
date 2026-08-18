@@ -18,7 +18,7 @@
 <meta name="description" content="个人日常生活记录工作台：概览/随笔/待办/记账/学习/收藏/运动/精选/设置，本地存储，PWA 可添加到手机主屏幕。">
 
 <!-- manifest 由脚本运行时注入；apple-touch-icon 静态内联（HelloKitty 图标），确保 iOS「添加到主屏幕」稳定显示图标 -->
-<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAAD8klEQVR42u3dy20UQRQF0ArHS3ZsvGZNJsRBJkTBmnDIYMCSQRbuaabn0/3qvnOlu7Ol8qujkt1dtsconh9fv5y0VocACzzACjjECjfICjbIGg/bBmkMbJuiEahthMbANnyNQW3oGoPasDUGtSFrDGrD1RjUhqoxqA1TY1AbokahNkCNAW14GoPa0DQKtYFpDGjD0ijUBqUxoA1Jo1AbkMaANhyNQm0wCrRqRdCGstyXWM+EqA1kGU9F0FADfTWcqqChBvoqNJXwVF1XOdCGsY6mMmioF1AbxHksVeBUXx/Qk2GeATTUQJ+2xDqBjsF8K5ZbP3evdQLdBPISlEfmEesFGuaIAA0z1LOChhlqoEEGG+gL+/x8+vb0BDPUE4N+RXyuMENdG/RvwG+7hvkv6j8fDzPUh4P+B/BWzO9Qvy3MUO8CegXxNZhXUb9WwB57An40aMChHnsC3hs04P1Qjz0B34r5HqgBz0Y9jjqdjzihIc6HPfb+vvko0NIDtR8KJQr1OOJx3V2fQ4MMdZXn0Fe9KQQZ7MpvCi9BDTG8Ne9ybDixncZQT3s5yQ96UOdcH70EsktHUE93wX/lJp1APfVvrLgSCnTs7xQK1DGgBeoY0AI10AI0zJKEesAsSaiBFqBhlqqogRagYZaqqAfMkoQaaAEaZqmKGmgBGmgBGmaogRagJwEtUAMtQAMtQMMsk6IGWoAGWoAGGuhE0AI10Dvl08cPU4Kpvm6gd8ZwrtURz7JuoAugqIx6tnXHggaj77qBBgNooO+LoiKOWdcNtJPOCQ000EADDTTQOS9VPIcGOva1tzeFQLvHIUAL0EAL0JVAizihBWaga+bn989AAz0/4nMFGugYzB1RAw000EADDTTQh2DuhhpoJzTQQAMNNNBAAw2059BAt35b2PlNoT80I0ADLUADLUBDLTUxAy1AAy1AAw20/1MoMAMtQAMtQEMt5TADLUBDLVUxAy1AAy1AQw0z0AL0pKChhjkONNQwAy1AVwYNNcxAC9CVQUMNcxxoqGEGWoCuDBpqmONAQw1zHGioYd4E+iVAC9BQwww01DADDTXMuaChhjkONNQwx4GGGuY40FDDvAgaaonCPDtosHtDjgUNdV/MsaCh7on5Heg01GD3gbyIORE01D0wtwINdjbkVdDpqLvCTt/TsZb0L74b6g77Of6XDkNIh91lD8cl6TKMNNwd921cmo7DmRV2170aW9J1SLPgtj8bQUNdC7j534gZ6mOBm+8DMAN9X/zmUAA01BqFGWqNwwy1xmGGWuMwQ61xmKHWOMxQaxxmqDUOM9gaBxlqjcQMtsZBBlsjIYOtkZDh1kjEgAO8V34BC2CaTnxtb/0AAAAASUVORK5CYII=">
+<link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAADJ72q4AAAERklEQVR42u3dy1HrUBREUYVDEI6EJIiDBIiJWJgxYSoGVDGwsdHnfrr7bFePHlQ9nb4L2ZItefn6/CDkzyxUQMBBwEHAQcBBwEHAQcBBwEHAQcBBCDgIOAg4CDgIOK7y/voSvwDKMy46HW2PrwOvGRejvkyV+M64OPZloSRgxiWgNUEfGTMuAZVJEUmacYmpbFd9b8+XXdu/5ffVZvTAMbi17T62LPnGX9OcUR3HlNa2dPez6r/Z9VOXGaVxTGzt3+6ulv8Xwb1/d5xRF8f01h539yeCezGdURSHSGtNfFjPKIdDqrV73Z3cc1jMCI7dxe1icY8IOEJk/OSwidvIzlgIx7qubYtrIkN8Rl0c55t6/Jjuw2JGRRxdK2tV38nXHC4zhuBYjz7OFHf41ajRjPY41nOPM8UdO07xmlEFx/jWhvmwntESx9ru0fWcR8CM4GiD4/Z0CDiMZTQ5/OuR6TOCAxxZONY+j2wZB2YEBzjAwdMKODJYiAxbGoc4i+kjS+CwOGMYQ2SkD7M9hymLKePXeloJkDGygSo4YliM7KEEjkgZA6rIxxEso3cbye+txLPoXUgsjlIyOnWS+XmOgjKad5L5YZ+yMtrWEvgZ0uIyGtaS9ulzWLSqJe26FUA0rCXtijcieMWs1rWyROpa6kK3YEAGOMDBnX0It30iaTjwwd0E8ZEsI/8Oxsjg3ufI4FsTyEAZsd+3ggy+qQkWKThYVDsf4AAHrznwAQ5wcChLUg5lWUVwgAMcyOD0OTjAwbuy+AAHOMABDnAQcxzja7o8PU1fqinbAI5H63Gb8SYmbgM4dqzK4LWZvg3g2Lcqw9ZGYRvMcCisyoC1UdgGv+tWwAEOcIBDD8fGVem6NgrbAA72HOAABzjAAY4XznO4nwdbIs+dVztDCg7eWwEH78pm4+hdxNvz5Spqn7GYsoXl9hy3LQtSUBgk/GklxsGUkaNwVHPQ+ykpDQcOtnPhaIXwmoOAI3UHDo5aOAIOlMAxToadD3B0OQzugWO8s4o4BvxBj9lzcIb0lI8pO/YHMgZsQKv/Me2iJp0neLXXHAc2IxAHL0hbHWBzOSRHK0E43H1wfw5w2J8hBQcBB6mDAx++MsABDu59jgxwgAMcJAgHPhxlgAMcfDskMsABDr6RGhkf4CCVcODDSAY4wKGEAx8uMubgwIeFDHCAQw8HPvRlzMSBD3EZk3HgQ1kGOMAhjAMfsjIkcOBDU4YKDnwIyhDCgQ81GVo48CElQw4HPqTWQg5HZR9qC6GIo6YPwVUQxVHNh+YS6OIoQkS5fHUc2T7EmzfAkepDv3YPHGFEXAp3wpHhw6htMxzWROx6tsRhR8S0YWMcFkSsu7XHIUskoNUQHDpKkspMwzGRSF6NmTiGQcmuLh9Hcyh16qqFY4seSgAHAQcBBwEHAQcBBwEHAQcBBwEHIeAg4CDgIOAg4CDgIOAgbvkG5eu7Zv7zEZcAAAAASUVOROokYPc=">
 <style>
 /* ============ 设计变量：暖米温馨、低饱和、护眼 ============ */
 :root{
@@ -122,6 +122,7 @@ textarea{resize:vertical;min-height:70px}
 input:focus,textarea:focus,select:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
 .inline-form{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
 .inline-form .grow{flex:1;min-width:140px}
+.w-narrow{flex:0 0 auto;width:150px}
 .btn{border:none;border-radius:10px;padding:10px 18px;font-size:14px;cursor:pointer;
   background:var(--accent);color:#fff;font-weight:600;min-height:44px}
 .btn:hover{filter:brightness(1.05)}
@@ -189,10 +190,36 @@ input:focus,textarea:focus,select:focus{outline:2px solid var(--accent-soft);bor
   .page-head .desc{display:none}
   .stat-grid{grid-template-columns:repeat(2,1fr)}
   .page-head h1{font-size:18px}
+  .w-narrow{width:108px}
+  .w-narrow input{font-size:16px}
 }
 @media(max-width:380px){
   .stat-grid{grid-template-columns:1fr}
 }
+
+/* ============ 弹窗（同步 / 精选预览） ============ */
+.modal-overlay{position:fixed;inset:0;background:rgba(74,64,57,.45);display:none;align-items:center;justify-content:center;z-index:200;padding:16px}
+.modal-overlay.show{display:flex}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  max-width:460px;width:100%;max-height:88vh;overflow:auto;box-shadow:0 12px 40px rgba(74,64,57,.25)}
+.modal-head{display:flex;align-items:center;gap:8px;padding:16px 16px 10px;border-bottom:1px solid var(--border)}
+.modal-head .m-title{font-weight:700;font-size:16px;flex:1}
+.modal-body{padding:14px 16px}
+.modal-foot{padding:10px 16px 16px;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.code-box{width:100%;min-height:84px;border:1px dashed var(--accent);border-radius:10px;padding:10px;
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;line-height:1.5;color:var(--text);
+  background:#FBF4EC;word-break:break-all;resize:vertical}
+.modal input[type=text]{margin-top:6px}
+.sync-status{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.sync-dot{width:9px;height:9px;border-radius:50%;background:var(--muted)}
+.sync-dot.on{background:var(--income);box-shadow:0 0 0 3px rgba(91,140,90,.18)}
+.sync-dot.wait{background:#E0A93C;box-shadow:0 0 0 3px rgba(224,169,60,.18)}
+.log-line{font-size:12px;color:var(--muted);padding:3px 0;border-bottom:1px dashed var(--border)}
+.pop-prev{max-height:60vh;overflow:auto;white-space:pre-wrap;line-height:1.7}
+.pop-prev .pp-type{font-size:12px;color:var(--accent);font-weight:700}
+.pop-prev .pp-title{font-size:18px;font-weight:700;margin:4px 0 8px}
+.pop-prev .pp-meta{font-size:12px;color:var(--muted);margin-top:10px}
+
 </style>
 </head>
 <body>
@@ -233,6 +260,16 @@ input:focus,textarea:focus,select:focus{outline:2px solid var(--accent-soft);bor
   <section id="page-settings" class="page"></section>
 </main>
 
+<!-- ============ 通用弹窗：同步流程 / 精选预览 ============ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-head"><span class="m-title" id="modal-title">提示</span>
+      <button class="btn sm ghost" data-act="modal-close">✕ 关闭</button></div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-foot" id="modal-foot"></div>
+  </div>
+</div>
+
 <script>
 /* ============================================================
    个人生活工作台 · 单文件应用脚本
@@ -244,9 +281,12 @@ input:focus,textarea:focus,select:focus{outline:2px solid var(--accent-soft);bor
 var K = {
   notes:'wb_lifehub_notes', todos:'wb_lifehub_todos', accounting:'wb_lifehub_accounting',
   study:'wb_lifehub_study', favorites:'wb_lifehub_favorites', fitness:'wb_lifehub_fitness',
-  picks:'wb_lifehub_picks', seeded:'wb_lifehub_seeded'
+  picks:'wb_lifehub_picks', seeded:'wb_lifehub_seeded',
+  tomb:'wb_lifehub_tomb'   // 跨设备同步墓碑：{bucket:{id:ts}} 记录已删除项，保证删除能双向传播
 };
-var VER = '1.0';
+var BUCKETS=['notes','todos','accounting','study','favorites','fitness','picks'];
+var K_TOMB=K.tomb;
+var VER = '1.1';
 
 /* ---------- 工具 ---------- */
 function pad(n){return String(n).padStart(2,'0');}
@@ -256,7 +296,31 @@ function nowMonth(){return todayStr().slice(0,7);}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
 function esc(s){s=(s==null?'':String(s));return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function load(key,def){try{var v=localStorage.getItem(key);return v?JSON.parse(v):def;}catch(e){return def;}}
-function save(key,val){try{localStorage.setItem(key,JSON.stringify(val));}catch(e){}}
+function save(key,val){try{localStorage.setItem(key,JSON.stringify(val));}catch(e){}
+  /* 同步钩子：若已建立 P2P 连接，数据一变更就自动推送给对端（防数据碎片化、统一数据源） */
+  if(typeof Sync!=='undefined' && Sync && Sync.connected){ Sync.schedulePush(); }
+}
+function bucketOf(key){return key.replace('wb_lifehub_','');}
+
+/* ---------- 同步墓碑：本地删除也记一笔，合并时据此传播删除 ---------- */
+function getTomb(){return load(K_TOMB,{});}
+function stampTomb(bucket,id){var t=getTomb();(t[bucket]=t[bucket]||{})[id]=Date.now();save(K_TOMB,t);}
+
+/* ---------- 冲突合并：以「修改时间戳 _ts」为准，墓碑优先删除 ---------- */
+function mergeBucket(local,remote,remoteTomb,localTomb){
+  var byId={};
+  local.forEach(function(r){ if(r&&r.id) byId[r.id]={rec:r,ts:r._ts||0}; });
+  remote.forEach(function(r){ if(!r||!r.id) return; var ex=byId[r.id]; if(!ex||(r._ts||0)>ex.ts) byId[r.id]={rec:r,ts:r._ts||0}; });
+  function maxTomb(id){ return Math.max(remoteTomb[id]||0, localTomb[id]||0); }
+  var out=[];
+  for(var id in byId){ var it=byId[id]; if(maxTomb(id) > it.ts) continue; out.push(it.rec); }
+  return out;
+}
+function mergeTomb(a,b){
+  var m={};
+  [a,b].forEach(function(t){ if(!t) return; for(var k in t){ if(!m[k]||t[k]>m[k]) m[k]=t[k]; } });
+  return m;
+}
 function fmt(n){return Number(n).toLocaleString('zh-CN',{maximumFractionDigits:2});}
 
 /* ---------- 预置示例数据（首次打开注入，真实感内容） ---------- */
@@ -343,6 +407,7 @@ var D={
 var routes=['overview','todos','fitness','accounting','picks','notes','study','favorites','settings'];
 function navigate(route){
   if(routes.indexOf(route)<0) route='overview';
+  currentRoute=route;
   var pages=document.querySelectorAll('.page');
   for(var i=0;i<pages.length;i++) pages[i].classList.toggle('active',pages[i].id==='page-'+route);
   var items=document.querySelectorAll('.nav-item');
@@ -614,11 +679,42 @@ render.favorites=function(){
   document.getElementById('page-favorites').innerHTML=h+form+'<div class="card">'+body+'</div>';
 };
 
+/* 7. 运动饮食：按日期选择三分化 A/B/C 计划，任务逐项勾选 + 进度条 */
+var PLAN=[
+  {day:'A',name:'推（胸 / 肩 / 肱三头）',items:[
+    ['平板杠铃卧推','4 × 8-10','组间 90s'],
+    ['上斜哑铃推举','3 × 10-12','组间 75s'],
+    ['坐姿哑铃肩推','3 × 10-12','组间 75s'],
+    ['绳索夹胸','3 × 12-15','组间 60s'],
+    ['绳索三头下压','3 × 12-15','组间 60s']
+  ]},
+  {day:'B',name:'拉（背 / 肱二头）',items:[
+    ['引体向上（或高位下拉）','4 × 8-10','组间 90s'],
+    ['杠铃俯身划船','4 × 8-10','组间 90s'],
+    ['坐姿绳索划船','3 × 10-12','组间 75s'],
+    ['哑铃弯举','3 × 12-15','组间 60s'],
+    ['锤式弯举','3 × 12-15','组间 60s']
+  ]},
+  {day:'C',name:'腿（股四 / 腘绳 / 核心）',items:[
+    ['杠铃深蹲','4 × 8-10','组间 120s'],
+    ['腿举','3 × 12-15','组间 90s'],
+    ['罗马尼亚硬拉','3 × 10-12','组间 90s'],
+    ['俯卧腿弯举','3 × 12-15','组间 60s'],
+    ['站姿提踵','4 × 15-20','组间 45s'],
+    ['卷腹 / 平板支撑','3 组','组间 45s']
+  ]}
+];
+var fitViewDate='', fitSelPlan='A';
+function planName(day){for(var i=0;i<PLAN.length;i++){if(PLAN[i].day===day)return PLAN[i].name;}return '';}
+function planItems(day){var p=null;for(var i=0;i<PLAN.length;i++){if(PLAN[i].day===day)p=PLAN[i];}return p?p.items.map(function(it){return {name:it[0],sets:it[1],rest:it[2],done:false};}):[];}
+function findTrain(date){var list=D.fitness();for(var i=0;i<list.length;i++){if(list[i].kind==='train'&&list[i].date===date)return list[i];}return null;}
+
 /* 7. 运动饮食（原运动减肥，重命名为运动饮食） */
 render.fitness=function(){
   var today=todayStr();
   var list=D.fitness();
-  var h=head('🏋️','运动饮食','三分化训练 + 饮食方案 + 打卡');
+  if(!fitViewDate) fitViewDate=today;
+  var h=head('🏋️','运动饮食','按日期三分化训练 + 饮食方案 + 打卡');
 
   // 用户身体数据：身高170cm，默认体重 80kg（160斤）
   var HEIGHT=170;
@@ -656,45 +752,42 @@ render.fitness=function(){
   var weightForm='<div class="form-card"><div class="card-title">⚖️ 体重打卡</div><div class="inline-form">'+
     '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">日期</label>'+
     '<input type="date" id="weight-date" value="'+today+'"></div>'+
-    '<div class="grow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">体重(kg)</label>'+
+    '<div class="w-narrow"><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">体重(kg)</label>'+
     '<input type="number" id="weight-input" placeholder="'+latestW+'" step="0.1" inputmode="decimal"></div>'+
     '<button class="btn" data-act="add-weight">＋ 记录体重</button></div></div>';
-  var trainForm='<div class="form-card"><div class="card-title">💪 训练打卡</div><div class="inline-form">'+
-    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">训练日</label>'+
-    '<select id="train-day"><option value="A">A 推（胸肩三头）</option><option value="B">B 拉（背二头）</option><option value="C">C 腿（股四腘绳核心）</option></select></div>'+
-    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">日期</label>'+
-    '<input type="date" id="train-date" value="'+today+'"></div>'+
-    '<button class="btn" data-act="add-train">✅ 完成打卡</button></div></div>';
+  var theTrain=findTrain(fitViewDate||today);
+  var planSeg='<div class="seg" id="fit-plan-seg" data-plan-seg>'+
+    PLAN.map(function(p){return '<button data-plan="'+p.day+'"'+(p.day===fitSelPlan?' class="on"':'')+'>'+p.day+' · '+p.name.split('（')[0]+'</button>';}).join('')+'</div>';
+  var trainControl='<div class="form-card"><div class="card-title">💪 设定每日训练计划</div>'+
+    '<div class="inline-form"><div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">日期</label>'+
+    '<input type="date" id="fit-date2" value="'+(fitViewDate||today)+'"></div>'+
+    '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">三分化</label>'+planSeg+'</div>'+
+    '<button class="btn" data-act="set-train">✅ 设定/更新计划</button></div>'+
+    '<div class="muted" style="font-size:11px;margin-top:-6px;margin-bottom:10px">切换日期可查看/重设历史某天计划；设定后下方任务可逐项勾选，自动统计进度。</div></div>';
+  var trainCard='';
+  if(theTrain){
+    var tItems=theTrain.items||[]; var tDone=0; tItems.forEach(function(it){if(it.done)tDone++;});
+    var tPct=tItems.length?Math.round(tDone/tItems.length*100):0;
+    trainCard='<div class="card"><div class="card-title">🔥 '+theTrain.plan+' · '+esc(planName(theTrain.plan))+'（'+theTrain.date+'）</div>'+
+      '<div class="row-between" style="margin-bottom:6px"><span class="muted" style="font-size:12px">完成进度</span><span class="amt" style="color:var(--income)">'+tDone+'/'+tItems.length+'（'+tPct+'%）</span></div>'+
+      '<div style="height:10px;background:var(--accent-soft);border-radius:6px;overflow:hidden;margin-bottom:10px"><div style="height:100%;width:'+tPct+'%;background:linear-gradient(90deg,var(--accent),#E0A93C)"></div></div>';
+    if(!tItems.length) trainCard+='<div class="muted">该计划暂无任务</div>';
+    tItems.forEach(function(it,idx){
+      trainCard+='<div class="list-item" style="border:none;padding:8px 0">'+
+        '<div class="chk'+(it.done?' on':'')+'" data-act="toggle-train-item" data-rec="'+theTrain.id+'" data-idx="'+idx+'">'+(it.done?'✓':'')+'</div>'+
+        '<div class="li-main"><div class="li-title'+(it.done?' done-text':'')+'">'+esc(it.name)+'</div>'+
+        '<div class="li-meta">'+esc(it.sets)+' · ⏱ '+esc(it.rest)+'</div></div></div>';
+    });
+    trainCard+='</div>';
+  } else {
+    trainCard='<div class="card"><div class="empty-hint">📅 '+(fitViewDate||today)+' 还没有训练计划，先在上方「设定/更新计划」选择 A/B/C。</div></div>';
+  }
 
-  // 谭成义三分化训练方案（展示）
-  var plan=[
-    {day:'A · 推（胸 / 肩 / 肱三头）',items:[
-      ['平板杠铃卧推','4 × 8-10','组间 90s'],
-      ['上斜哑铃推举','3 × 10-12','组间 75s'],
-      ['坐姿哑铃肩推','3 × 10-12','组间 75s'],
-      ['绳索夹胸','3 × 12-15','组间 60s'],
-      ['绳索三头下压','3 × 12-15','组间 60s']
-    ]},
-    {day:'B · 拉（背 / 肱二头）',items:[
-      ['引体向上（或高位下拉）','4 × 8-10','组间 90s'],
-      ['杠铃俯身划船','4 × 8-10','组间 90s'],
-      ['坐姿绳索划船','3 × 10-12','组间 75s'],
-      ['哑铃弯举','3 × 12-15','组间 60s'],
-      ['锤式弯举','3 × 12-15','组间 60s']
-    ]},
-    {day:'C · 腿（股四 / 腘绳 / 核心）',items:[
-      ['杠铃深蹲','4 × 8-10','组间 120s'],
-      ['腿举','3 × 12-15','组间 90s'],
-      ['罗马尼亚硬拉','3 × 10-12','组间 90s'],
-      ['俯卧腿弯举','3 × 12-15','组间 60s'],
-      ['站姿提踵','4 × 15-20','组间 45s'],
-      ['卷腹 / 平板支撑','3 组','组间 45s']
-    ]}
-  ];
-  var planCard='<div class="card"><div class="card-title">🏋️ 谭成义三分化训练方案</div>'+
-    '<div class="muted" style="font-size:12px;margin-bottom:8px">每周练 3 天（如 A-B-C-休-A-B…），分化训练高效增肌减脂。动作/组次参考谭成义教程思路，量力而行。<span class="tag">练完到上方「训练打卡」勾选</span></div>';
-  plan.forEach(function(p){
-    planCard+='<div class="group-label">🔥 '+esc(p.day)+'</div>';
+  // 三分化训练模板参考（使用模块级 PLAN）
+  var planCard='<div class="card"><div class="card-title">🏋️ 三分化训练模板（参考）</div>'+
+    '<div class="muted" style="font-size:12px;margin-bottom:8px">每周练 3 天（如 A-B-C-休-A-B…），分化训练高效增肌减脂。动作/组次参考谭成义教程思路，量力而行。</div>';
+  PLAN.forEach(function(p){
+    planCard+='<div class="group-label">🔥 '+p.day+' · '+esc(p.name)+'</div>';
     p.items.forEach(function(it){
       planCard+='<div class="list-item" style="border:none;padding:8px 0">'+
         '<div class="li-main"><div class="li-title">'+esc(it[0])+'</div>'+
@@ -731,73 +824,98 @@ render.fitness=function(){
         '<div class="li-meta">📅 '+f.date+'</div></div>'+
         '<button class="btn sm ghost" data-act="del-fit" data-id="'+f.id+'">删除</button></div>';
     } else {
+      var ri=f.items||[]; var rd=0; ri.forEach(function(it){if(it.done)rd++;});
       body+='<div class="list-item"><div class="li-main">'+
-        '<div class="li-title">✅ 训练完成 · '+esc(f.name||f.day)+'</div>'+
+        '<div class="li-title">💪 '+esc(f.plan||'')+' · '+esc(planName(f.plan||''))+'（'+rd+'/'+ri.length+'✓）</div>'+
         '<div class="li-meta">📅 '+f.date+'</div></div>'+
         '<button class="btn sm ghost" data-act="del-fit" data-id="'+f.id+'">删除</button></div>';
     }
   });
-  document.getElementById('page-fitness').innerHTML=h+bodyData+chart+weightForm+trainForm+planCard+dietCard+'<div class="card">'+body+'</div>';
+  document.getElementById('page-fitness').innerHTML=h+bodyData+chart+weightForm+trainControl+trainCard+planCard+dietCard+'<div class="card">'+body+'</div>';
 };
 
-/* 8. 精选：改为前端动态 RSS 资讯 + 保留手动收藏 */
+/* 8. 精选：本地精选内容 + 点击弹窗预览；不再前端直连 RSS（规避跨域），预留后端代理接口 */
 var PICK_TABS=[
-  {key:'headline',ico:'📰',name:'每日头条',feeds:['https://sspai.com/feed','https://www.ithome.com/rss/']},
-  {key:'finance',ico:'💹',name:'财经',feeds:['https://36kr.com/feed','https://www.huxiu.com/rss/0.xml']},
-  {key:'money',ico:'🏦',name:'金融',feeds:['https://www.huxiu.com/rss/0.xml','https://36kr.com/feed']},
-  {key:'ai',ico:'🤖',name:'AI动向',feeds:['https://www.qbitai.com/feed','https://www.jiqizhixin.com/feed']}
+  {key:'headline',ico:'📰',name:'每日头条'},
+  {key:'finance',ico:'💹',name:'财经'},
+  {key:'money',ico:'🏦',name:'金融'},
+  {key:'ai',ico:'🤖',name:'AI动向'},
+  {key:'mine',ico:'⭐',name:'我的收藏'}
 ];
 var currentPickTab='headline';
-function pickText(el,tag){var n=el.querySelector(tag);return n?n.textContent.trim():'';}
-function pickStrip(s){if(!s)return '';var d=document.createElement('div');d.innerHTML=s;var t=(d.textContent||'').replace(/\s+/g,' ').trim();return t.length>90?t.slice(0,90)+'…':t;}
-function fetchRSS(rssUrl){
-  return fetch('https://api.allorigins.win/raw?url='+encodeURIComponent(rssUrl))
-    .then(function(r){if(!r.ok)throw new Error('http'+r.status);return r.text();})
-    .then(function(xml){
-      var doc=new DOMParser().parseFromString(xml,'text/xml');
-      var items=doc.querySelectorAll('item, entry');
-      var arr=[];
-      for(var i=0;i<items.length && arr.length<12;i++){
-        var it=items[i];
-        var title=pickText(it,'title');
-        var link=pickText(it,'link');
-        if(!link && it.querySelector('link')) link=it.querySelector('link').getAttribute('href')||'';
-        var desc=pickText(it,'description')||pickText(it,'summary')||pickText(it,'content')||'';
-        arr.push({title:title,link:link,desc:pickStrip(desc)});
-      }
-      return arr;
-    });
+var pickView=[];   // 当前标签页展示的精选（用于点击弹窗预览）
+/* 本地精选内容（示例，可自由增删）。每个：{title, desc, src, link?} */
+var LOCAL_PICKS={
+  headline:[
+    {title:'如何建立稳定的每日复盘习惯',desc:'每天花 10 分钟回顾三件事：做了什么、哪里可改进、明天最重要的一件。坚持比完美重要。',src:'本地精选'},
+    {title:'极简主义的家：从断舍离开始',desc:'按「一年没用就处理」原则清理；留下真正带来幸福感的东西，空间与心境都会变轻。',src:'本地精选'},
+    {title:'一杯手冲咖啡的早晨仪式',desc:'称豆、温水洗滤纸、分段注水。慢下来的几分钟，是给自己的喘息。',src:'本地精选'}
+  ],
+  finance:[
+    {title:'普通人该怎样做资产配置',desc:'先留 3-6 个月应急金，再用指数基金做长期定投，避免追涨杀跌。',src:'本地精选'},
+    {title:'读懂一张资产负债表',desc:'资产减负债等于净值；现金流比账面财富更能决定抗风险能力。',src:'本地精选'}
+  ],
+  money:[
+    {title:'货币基金与银行存款的区别',desc:'货基流动性好、收益浮动；存款保本保息但有额度与期限。闲钱分开存放更稳。',src:'本地精选'},
+    {title:'ETF 是什么、怎么买',desc:'交易型开放式指数基金，像股票一样买卖，费率低、分散风险，适合工薪族长期持有。',src:'本地精选'}
+  ],
+  ai:[
+    {title:'大模型的「提示词」到底怎么写',desc:'给角色 + 任务 + 约束 + 示例，越具体越好；先说清楚要什么，再说不要什么。',src:'本地精选'},
+    {title:'AI 帮你做日常规划的两类用法',desc:'一是信息整理（摘要/对比），二是行动生成（日程/清单）。让它当副驾，决策权留给自己。',src:'本地精选'}
+  ]
+};
+/* [PICKS_BACKEND_HOOK] 后端代理接口预留：若已部署后端 RSS 代理，在此返回与 LOCAL_PICKS 同结构的数组，
+   例如：return fetch('/api/picks?tab='+tabKey).then(function(r){return r.json();});
+   当前默认返回 null，使用本地精选内容，彻底规避前端跨域。 */
+function fetchPicksBackend(tabKey){ return null; }
+function pickStrip(s){if(!s)return '';s=String(s);return s.length>90?s.slice(0,90)+'…':s;}
+function pickCard(it,idx,ico){
+  return '<div class="card" data-act="pick-preview" data-idx="'+idx+'" style="cursor:pointer">'+
+    '<div class="row-between"><div class="card-title">'+ico+' '+esc(it.title||'无标题')+'</div><span class="muted">查看 ›</span></div>'+
+    (it.desc?'<div class="muted" style="margin-top:4px;font-size:12.5px">'+esc(pickStrip(it.desc))+'</div>':'')+
+    (it.src?'<div class="li-meta" style="margin-top:6px">🏷 '+esc(it.src)+'</div>':'')+'</div>';
 }
 function loadPickFeed(tabKey){
   var tab=null;for(var i=0;i<PICK_TABS.length;i++){if(PICK_TABS[i].key===tabKey)tab=PICK_TABS[i];}
   var box=document.getElementById('pick-feed');if(!box||!tab)return;
-  box.innerHTML='<div class="empty-hint">⏳ 正在获取「'+esc(tab.name)+'」资讯…</div>';
-  var tried=0;
-  function tryNext(){
-    if(tried>=tab.feeds.length){box.innerHTML='<div class="empty-hint">⚠️ 无法获取资讯（网络受限或源不可用），请检查网络后重试。</div>';return;}
-    var url=tab.feeds[tried++];
-    fetchRSS(url).then(function(items){
-      if(!items.length){tryNext();return;}
-      var h='';
-      items.forEach(function(it){
-        var href=it.link?it.link:'#';
-        h+='<a class="card" href="'+esc(href)+'" target="_blank" rel="noopener" style="display:block;text-decoration:none;color:inherit">'+
-          '<div class="row-between"><div class="card-title">'+tab.ico+' '+esc(it.title||'无标题')+'</div><span class="muted">↗</span></div>'+
-          (it.desc?'<div class="muted" style="margin-top:4px;font-size:12.5px">'+esc(it.desc)+'</div>':'')+'</a>';
-      });
-      box.innerHTML=h;
-    }).catch(function(){tryNext();});
+  var ico=tab.ico;
+  if(tabKey==='mine'){
+    var mine=D.picks().map(function(p){return {title:p.title,desc:p.note,src:p.type+' · 收藏'};});
+    pickView=mine;
+    if(!mine.length){box.innerHTML='<div class="empty-hint">还没有手动收藏，用下方表单加一条吧 ✨</div>';return;}
+    box.innerHTML=mine.map(function(it,idx){return pickCard(it,idx,ico);}).join('');
+    return;
   }
-  tryNext();
+  var backend=fetchPicksBackend(tabKey);
+  function renderList(arr){
+    pickView=arr||[];
+    if(!pickView.length){box.innerHTML='<div class="empty-hint">该分类暂无内容，去「我的收藏」添加或配置后端资讯源 ✨</div>';return;}
+    box.innerHTML=pickView.map(function(it,idx){return pickCard(it,idx,ico);}).join('');
+  }
+  if(backend && typeof backend.then==='function'){
+    box.innerHTML='<div class="empty-hint">⏳ 正在从后端获取资讯…</div>';
+    backend.then(renderList).catch(function(){renderList(LOCAL_PICKS[tabKey]||[]);});
+  } else {
+    renderList(LOCAL_PICKS[tabKey]||[]);
+  }
+}
+function openPickPreview(idx){
+  var it=pickView[idx]; if(!it) return;
+  showModal('✨ '+(it.src||'精选'),
+    '<div class="pop-prev"><div class="pp-type">'+(it.src||'精选')+'</div>'+
+    '<div class="pp-title">'+esc(it.title||'')+'</div>'+
+    '<div>'+(it.desc?esc(it.desc):'<span class="muted">暂无详情</span>')+'</div>'+
+    (it.link?'<div class="pp-meta"><a href="'+esc(it.link)+'" target="_blank" rel="noopener">打开原文 ↗</a></div>':'')+'</div>',
+    '<button class="btn" data-act="modal-close">关闭</button>');
 }
 render.picks=function(){
   var today=todayStr();
   var list=D.picks().slice().reverse();
-  var h=head('✨','每日精选','动态资讯 + 手动收藏');
+  var h=head('✨','每日精选','本地精选 + 弹窗预览（已规避跨域）');
   var tabs='<div class="page-tabs" id="pick-tabs">';
   PICK_TABS.forEach(function(t){tabs+='<div class="pill'+(t.key===currentPickTab?' on':'')+'" data-pick="'+t.key+'">'+t.ico+' '+t.name+'</div>';});
   tabs+='</div>';
-  var feedBox='<div id="pick-feed"><div class="empty-hint">⏳ 正在加载资讯…</div></div>';
+  var feedBox='<div id="pick-feed"><div class="empty-hint">正在加载精选…</div></div>';
   var types=['影','音','文','物','书','剧','其他'];
   var form='<div class="form-card"><div class="card-title">✍️ 手动添加精选</div><div class="inline-form">'+
     '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">类型</label>'+
@@ -809,7 +927,7 @@ render.picks=function(){
     '<div><label style="display:block;font-size:12.5px;color:var(--muted);margin-bottom:5px">日期</label>'+
     '<input type="date" id="pick-date" value="'+today+'"></div>'+
     '<button class="btn" data-act="add-pick">＋ 收藏</button></div></div>';
-  var manual='<div class="group-label">📌 我的收藏（本地手动添加）</div>';
+  var manual='<div class="group-label">📌 我的收藏（点上方「我的收藏」标签查看，也可下方表单添加）</div>';
   if(!list.length) manual+='<div class="empty-hint">还没有手动精选，加一条吧 ✨</div>';
   list.forEach(function(p){
     manual+='<div class="card"><div class="row-between">'+
@@ -843,31 +961,60 @@ render.settings=function(){
   var danger='<div class="card" style="border-color:#E0A39C"><div class="card-title" style="color:var(--expense)">⚠️ 清空全部本地数据</div>'+
     '<div class="muted" style="margin-bottom:10px">将删除随笔、待办、记账、学习、收藏、运动、精选等全部本地数据，操作不可恢复，请先导出备份。</div>'+
     '<button class="btn danger" data-act="clear-all">🗑️ 清空全部本地数据</button></div>';
+  var syncCard='<div class="card" style="border-color:var(--accent-soft)"><div class="card-title">🔄 点对点同步（WebRTC · 无需服务器）</div>'+
+    '<div class="row-between" style="margin-bottom:10px"><span class="muted" style="font-size:12.5px">跨设备实时双向同步，按时间戳自动合并冲突</span>'+
+    '<span class="sync-status"><span class="sync-dot '+(Sync.connected?'on':(Sync.role?'wait':''))+'"></span>'+(Sync.connected?'已连接':(Sync.role?'连接中…':'未连接'))+'</span></div>'+
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">'+
+    '<button class="btn" data-act="sync-create">🔄 创建房间</button>'+
+    '<button class="btn ghost" data-act="sync-join-open">🔑 加入房间</button></div>'+
+    '<div class="muted" style="font-size:12px;margin-bottom:6px">同步日志：</div>'+
+    '<div id="sync-log">'+(Sync.logs.length?Sync.logs.map(function(l){return '<div class="log-line">'+esc(l)+'</div>';}).join(''):'<div class="muted" style="font-size:12px">暂无同步活动</div>')+'</div>'+
+    '<div class="muted" style="font-size:11px;margin-top:8px;line-height:1.7">用法：① 房主点「创建房间」→ 把<b>会话密钥+邀请码</b>发给另一台设备；② 对端点「加入房间」输入密钥+邀请码 → 生成<b>应答码</b>发回；③ 房主点「完成连接」粘贴应答码即建立。两设备需同时在线才能建立；不在线时各自本地保存，下次同时在线自动合并。JSON 导出/导入仍可作兜底备份。</div></div>';
+  var iconCard='<div class="card"><div class="card-title">🐱 更换主屏幕图标（HelloKitty 主题）</div>'+
+    '<div class="muted" style="font-size:12.5px;line-height:1.8">iOS / 安卓「添加到主屏幕」当前使用内置 HelloKitty 主题 PNG。想换成自己的图：'+
+    '<br>① 准备一张 <b>180×180 或 512×512</b> 的 PNG 方形图；'+
+    '<br>② 把图片转成 base64（在线 base64 工具即可）；'+
+    '<br>③ 打开本文件，替换 &lt;head&gt; 里 <code>apple-touch-icon</code> 的 <code>href="data:image/png;base64,..."</code>；'+
+    '<br>④ 运行时图标由 <code>setupPWA()</code> 生成，改 <code>makeIcon(size,\'🐱\')</code> 的 emoji 可换风格。'+
+    '<br>改完重新部署即生效。</div></div>';
   var ver='<div class="card"><div class="row-between"><div><b>个人生活工作台</b></div>'+
     '<div class="muted">v'+VER+'</div></div>'+
     '<div class="muted" style="margin-top:6px;font-size:12px">单文件 HTML · 纯 localStorage · 无后端 · 全 emoji 图标 · 暖米温馨主题。'+
     '后续可在本文件基础上迭代新增模块。</div></div>';
-  document.getElementById('page-settings').innerHTML=h+guide+data+danger+ver;
+  document.getElementById('page-settings').innerHTML=h+syncCard+guide+data+danger+iconCard+ver;
 };
 
 /* ---------- 操作：增删改 ---------- */
-function addNote(){var el=g('note-content');var v=el.value.trim();if(!v){el.focus();return;}var a=D.notes();a.push({id:uid(),date:todayStr(),content:v});save(K.notes,a);render.notes();}
-function delNote(id){var a=D.notes().filter(function(n){return n.id!==id;});save(K.notes,a);render.notes();}
-function addTodo(){var t=g('todo-text').value.trim();var d=g('todo-date').value||todayStr();if(!t){g('todo-text').focus();return;}var a=D.todos();a.push({id:uid(),text:t,date:d,done:false});save(K.todos,a);render.todos();}
-function delTodo(id){var a=D.todos().filter(function(t){return t.id!==id;});save(K.todos,a);render.todos();}
-function toggleTodo(id){var a=D.todos();a.forEach(function(t){if(t.id===id)t.done=!t.done;});save(K.todos,a);render.todos();}
+function addNote(){var el=g('note-content');var v=el.value.trim();if(!v){el.focus();return;}var a=D.notes();a.push({id:uid(),date:todayStr(),content:v,_ts:Date.now()});save(K.notes,a);render.notes();}
+function delNote(id){var a=D.notes().filter(function(n){return n.id!==id;});stampTomb('notes',id);save(K.notes,a);render.notes();}
+function addTodo(){var t=g('todo-text').value.trim();var d=g('todo-date').value||todayStr();if(!t){g('todo-text').focus();return;}var a=D.todos();a.push({id:uid(),text:t,date:d,done:false,_ts:Date.now()});save(K.todos,a);render.todos();}
+function delTodo(id){var a=D.todos().filter(function(t){return t.id!==id;});stampTomb('todos',id);save(K.todos,a);render.todos();}
+function toggleTodo(id){var a=D.todos();a.forEach(function(t){if(t.id===id){t.done=!t.done;t._ts=Date.now();}});save(K.todos,a);render.todos();}
 var accType='支出';
-function addAcc(){var amt=parseFloat(g('acc-amount').value);var cat=g('acc-cat').value.trim()||'未分类';var app=g('acc-app').value;var hb=g('acc-hb').checked;var note=g('acc-note').value.trim();var date=g('acc-date').value||todayStr();if(!amt||amt<=0){g('acc-amount').focus();return;}var a=D.accounting();a.push({id:uid(),date:date,type:accType,amount:amt,category:cat,app:app,hongbao:hb,note:note});save(K.accounting,a);render.accounting();}
-function delAcc(id){var a=D.accounting().filter(function(x){return x.id!==id;});save(K.accounting,a);render.accounting();}
-function addStudy(){var t=g('study-title').value.trim();var c=g('study-content').value.trim();if(!t||!c){g('study-title').focus();return;}var a=D.study();a.push({id:uid(),title:t,content:c,date:todayStr()});save(K.study,a);render.study();}
-function delStudy(id){var a=D.study().filter(function(s){return s.id!==id;});save(K.study,a);render.study();}
-function addFav(){var n=g('fav-name').value.trim();var u=g('fav-url').value.trim();var c=g('fav-cat').value.trim()||'其他';if(!n||!u){g('fav-name').focus();return;}var a=D.favorites();a.push({id:uid(),name:n,url:u,category:c});save(K.favorites,a);render.favorites();}
-function delFav(id){var a=D.favorites().filter(function(f){return f.id!==id;});save(K.favorites,a);render.favorites();}
-function addWeight(){var w=parseFloat(g('weight-input').value);var date=g('weight-date').value||todayStr();if(!w||w<=0){g('weight-input').focus();return;}var a=D.fitness();a.push({id:uid(),kind:'weight',date:date,weight:w});save(K.fitness,a);render.fitness();}
-function addTrain(){var day=g('train-day').value;var date=g('train-date').value||todayStr();var names={'A':'推（胸肩三头）','B':'拉（背二头）','C':'腿（股四腘绳核心）'};var a=D.fitness();a.push({id:uid(),kind:'train',date:date,day:day,name:names[day],done:true});save(K.fitness,a);render.fitness();}
-function delFit(id){var a=D.fitness().filter(function(f){return f.id!==id;});save(K.fitness,a);render.fitness();}
-function addPick(){var ty=g('pick-type').value;var t=g('pick-title').value.trim();var n=g('pick-note').value.trim();var date=g('pick-date').value||todayStr();if(!t){g('pick-title').focus();return;}var a=D.picks();a.push({id:uid(),type:ty,title:t,note:n,date:date});save(K.picks,a);render.picks();}
-function delPick(id){var a=D.picks().filter(function(p){return p.id!==id;});save(K.picks,a);render.picks();}
+function addAcc(){var amt=parseFloat(g('acc-amount').value);var cat=g('acc-cat').value.trim()||'未分类';var app=g('acc-app').value;var hb=g('acc-hb').checked;var note=g('acc-note').value.trim();var date=g('acc-date').value||todayStr();if(!amt||amt<=0){g('acc-amount').focus();return;}var a=D.accounting();a.push({id:uid(),date:date,type:accType,amount:amt,category:cat,app:app,hongbao:hb,note:note,_ts:Date.now()});save(K.accounting,a);render.accounting();}
+function delAcc(id){var a=D.accounting().filter(function(x){return x.id!==id;});stampTomb('accounting',id);save(K.accounting,a);render.accounting();}
+function addStudy(){var t=g('study-title').value.trim();var c=g('study-content').value.trim();if(!t||!c){g('study-title').focus();return;}var a=D.study();a.push({id:uid(),title:t,content:c,date:todayStr(),_ts:Date.now()});save(K.study,a);render.study();}
+function delStudy(id){var a=D.study().filter(function(s){return s.id!==id;});stampTomb('study',id);save(K.study,a);render.study();}
+function addFav(){var n=g('fav-name').value.trim();var u=g('fav-url').value.trim();var c=g('fav-cat').value.trim()||'其他';if(!n||!u){g('fav-name').focus();return;}var a=D.favorites();a.push({id:uid(),name:n,url:u,category:c,_ts:Date.now()});save(K.favorites,a);render.favorites();}
+function delFav(id){var a=D.favorites().filter(function(f){return f.id!==id;});stampTomb('favorites',id);save(K.favorites,a);render.favorites();}
+function addWeight(){var w=parseFloat(g('weight-input').value);var date=g('weight-date').value||todayStr();if(!w||w<=0){g('weight-input').focus();return;}var a=D.fitness();a.push({id:uid(),kind:'weight',date:date,weight:w,_ts:Date.now()});save(K.fitness,a);render.fitness();}
+function setTrainPlan(){
+  var date=(g('fit-date2')?g('fit-date2').value:'')||todayStr(); fitViewDate=date;
+  var day=fitSelPlan;
+  var list=D.fitness(); var rec=null;
+  for(var i=0;i<list.length;i++){ if(list[i].kind==='train'&&list[i].date===date) rec=list[i]; }
+  if(rec){ rec.plan=day; rec.items=planItems(day); rec._ts=Date.now(); }
+  else { list.push({id:uid(),kind:'train',date:date,plan:day,items:planItems(day),_ts:Date.now()}); }
+  save(K.fitness,list); render.fitness();
+}
+function toggleTrainItem(recId,idx){
+  var list=D.fitness();
+  for(var i=0;i<list.length;i++){ if(list[i].id===recId && list[i].items){ list[i].items[idx].done=!list[i].items[idx].done; list[i]._ts=Date.now(); break; } }
+  save(K.fitness,list); render.fitness();
+}
+function delFit(id){var a=D.fitness().filter(function(f){return f.id!==id;});stampTomb('fitness',id);save(K.fitness,a);render.fitness();}
+function addPick(){var ty=g('pick-type').value;var t=g('pick-title').value.trim();var n=g('pick-note').value.trim();var date=g('pick-date').value||todayStr();if(!t){g('pick-title').focus();return;}var a=D.picks();a.push({id:uid(),type:ty,title:t,note:n,date:date,_ts:Date.now()});save(K.picks,a);render.picks();}
+function delPick(id){var a=D.picks().filter(function(p){return p.id!==id;});stampTomb('picks',id);save(K.picks,a);render.picks();}
 
 function exportJSON(){
   var data={version:VER,exportedAt:new Date().toISOString(),
@@ -929,15 +1076,26 @@ document.addEventListener('click',function(e){
     case 'add-fav':addFav();break;
     case 'del-fav':delFav(id);break;
     case 'add-weight':addWeight();break;
-    case 'add-train':addTrain();break;
+    case 'set-train':setTrainPlan();break;
+    case 'toggle-train-item':toggleTrainItem(t.dataset.rec, parseInt(t.dataset.idx,10)||0);break;
     case 'del-fit':delFit(id);break;
     case 'add-pick':addPick();break;
     case 'del-pick':delPick(id);break;
+    case 'pick-preview':openPickPreview(parseInt(t.dataset.idx,10)||0);break;
     case 'export':exportJSON();break;
     case 'import':g('import-file').click();break;
     case 'clear-all':clearAll();break;
+    case 'modal-close':closeModal();break;
+    case 'copy':{var cid=t.dataset.copy;var ce=g(cid);if(ce){copyText(typeof ce.value==='string'?ce.value:ce.textContent);}break;}
+    case 'sync-create':Sync.createRoom();break;
+    case 'sync-join-open':showModal('🔑 加入房间','<div class="field"><label>会话密钥（房主提供）</label><input type="text" id="j-key" placeholder="6位密钥" maxlength="12"></div><div class="field"><label>邀请码（房主提供）</label><textarea class="code-box" id="j-offer" placeholder="粘贴邀请码"></textarea></div>','<button class="btn" data-act="sync-join-do">生成应答码</button>');break;
+    case 'sync-join-do':{var jk=g('j-key').value.trim();var jo=g('j-offer').value.trim();Sync.joinRoom(jk,jo);break;}
+    case 'sync-complete-open':showModal('✅ 完成连接','<div class="muted" style="margin-bottom:8px">你是房主，粘贴对端发来的「应答码」：</div><div class="field"><textarea class="code-box" id="c-answer" placeholder="粘贴应答码"></textarea></div><div class="muted" style="font-size:12px">本房间会话密钥：<b>'+esc(Sync.key||'')+'</b></div>','<button class="btn" data-act="sync-complete-do">连接</button>');break;
+    case 'sync-complete-do':{var ca=g('c-answer').value.trim();if(ca)Sync.complete(ca);break;}
   }
 });
+// 点击遮罩关闭弹窗
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 // 记账类型切换
 document.addEventListener('click',function(e){
   var b=e.target.closest('#acc-seg button');
@@ -945,6 +1103,18 @@ document.addEventListener('click',function(e){
   var btns=document.querySelectorAll('#acc-seg button');
   for(var ai=0;ai<btns.length;ai++){btns[ai].classList.remove('on');}
   b.classList.add('on'); accType=b.dataset.v;
+});
+// 训练计划 A/B/C 选择
+document.addEventListener('click',function(e){
+  var pb=e.target.closest('[data-plan-seg] button');
+  if(!pb) return;
+  var seg=pb.parentNode; var btns=seg.querySelectorAll('button');
+  for(var i=0;i<btns.length;i++) btns[i].classList.remove('on');
+  pb.classList.add('on'); fitSelPlan=pb.dataset.plan;
+});
+// 健身页日期切换 → 联动查看该天计划
+document.addEventListener('change',function(e){
+  if(e.target && e.target.id==='fit-date2'){ fitViewDate=e.target.value||todayStr(); render.fitness(); }
 });
 // 文件导入
 document.addEventListener('change',function(e){
@@ -1003,6 +1173,155 @@ function setupPWA(){
     }catch(e){}
   }
 }
+
+/* ---------- 弹窗 / 复制 辅助 ---------- */
+var currentRoute='overview';
+function showModal(title,bodyHtml,footHtml){
+  var mt=g('modal-title'); if(mt) mt.textContent=title;
+  var mb=g('modal-body'); if(mb) mb.innerHTML=bodyHtml;
+  var mf=g('modal-foot'); if(mf) mf.innerHTML=footHtml||'';
+  var m=g('modal'); if(m) m.classList.add('show');
+}
+function closeModal(){var m=g('modal'); if(m) m.classList.remove('show');}
+function fallbackCopy(txt){var ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');alert('已复制 ✅');}catch(e){alert('复制失败，请手动长按选择文本');}ta.remove();}
+function copyText(txt){ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(function(){alert('已复制 ✅');},function(){fallbackCopy(txt);}); } else fallbackCopy(txt); }
+
+/* ---------- WebRTC 点对点同步（无服务器，手动信令 + AES-GCM 加密） ----------
+   工作流程：房主「创建房间」→ 生成会话密钥 + 邀请码 → 对端「加入房间」输入密钥+邀请码 → 生成应答码
+   → 房主「完成连接」粘贴应答码 → 建立 DataChannel。之后任一端数据变更 → 自动双向合并（按 _ts 时间戳，墓碑传播删除）。
+   不联网时各自本地保存；下次同时在线自动合并。JSON 导出/导入仍作为兜底备份保留。
+   [SYNC-BACKEND-HOOK] 若未来接入后端信令服务器，仅需把 manual 信令替换为服务器中转，合并逻辑无需改动。 */
+var Sync={
+  pc:null,dc:null,role:null,connected:false,key:'',_timer:null,_applying:false,logs:[],
+  ready:(function(){try{return typeof crypto!=='undefined'&&crypto.subtle&&typeof RTCPeerConnection!=='undefined'&&typeof TextEncoder!=='undefined';}catch(e){return false;}})(),
+  log:function(m){this.logs.unshift('['+new Date().toLocaleTimeString('zh-CN')+'] '+m);if(this.logs.length>8)this.logs.pop();if(currentRoute==='settings'){try{render.settings();}catch(e){}}}
+};
+function randKey(){var s='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';var r='';for(var i=0;i<6;i++)r+=s.charAt(Math.floor(Math.random()*s.length));return r;}
+function ab2str(buf){var b=new Uint8Array(buf);var s='';for(var i=0;i<b.length;i++)s+=String.fromCharCode(b[i]);return s;}
+function str2ab(s){var b=new Uint8Array(s.length);for(var i=0;i<s.length;i++)b[i]=s.charCodeAt(i);return b.buffer;}
+function b64urlEncode(s){return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+function b64urlDecode(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return atob(s);}
+function deriveKey(pass){
+  return crypto.subtle.importKey('raw',str2ab(pass),'PBKDF2',false,['deriveKey']).then(function(bk){
+    return crypto.subtle.deriveKey({name:'PBKDF2',salt:new TextEncoder().encode('lifehub-sync-salt'),iterations:100000,hash:'SHA-256'},bk,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+  });
+}
+function aesEncrypt(obj,pass){
+  return deriveKey(pass).then(function(k){
+    var iv=crypto.getRandomValues(new Uint8Array(12));
+    return crypto.subtle.encrypt({name:'AES-GCM',iv:iv},k,str2ab(JSON.stringify(obj))).then(function(buf){
+      return b64urlEncode(ab2str(iv)+'||'+ab2str(buf));
+    });
+  });
+}
+function aesDecrypt(code,pass){
+  return deriveKey(pass).then(function(k){
+    var raw=b64urlDecode(code);var idx=raw.indexOf('||');if(idx<0)throw new Error('邀请码格式错误');
+    var iv=str2ab(raw.slice(0,idx));var data=str2ab(raw.slice(idx+2));
+    return crypto.subtle.decrypt({name:'AES-GCM',iv:new Uint8Array(iv)},k,data).then(function(buf){return JSON.parse(ab2str(buf));});
+  });
+}
+function setupDc(dc){
+  Sync.dc=dc;
+  dc.onopen=function(){Sync.connected=true;Sync.log('🔗 数据通道已连接，开始实时同步 ✅');Sync.doPush();Sync.log('已推送本地全量数据');if(currentRoute==='settings'){try{render.settings();}catch(e){}}};
+  dc.onclose=function(){Sync.connected=false;Sync.log('连接已断开');if(currentRoute==='settings'){try{render.settings();}catch(e){}}};
+  dc.onmessage=function(e){try{var p=JSON.parse(e.data);syncApply(p);}catch(err){Sync.log('收到无法解析的数据');}};
+}
+function waitIce(pc){
+  return new Promise(function(resolve){
+    if(pc.iceGatheringState==='complete'){resolve();return;}
+    var done=false;function fin(){if(done)return;done=true;resolve();}
+    pc.addEventListener('icegatheringstatechange',function(){if(pc.iceGatheringState==='complete')fin();});
+    setTimeout(fin,3000);
+  });
+}
+function syncSnapshot(){
+  var data={};BUCKETS.forEach(function(b){data[b]=load(K[b],[]);});
+  return {data:data,tomb:getTomb()};
+}
+function syncApply(payload){
+  if(!payload||!payload.data)return;
+  Sync._applying=true;
+  var localTomb=getTomb();var remoteTomb=payload.tomb||{};var changed=false;
+  BUCKETS.forEach(function(b){
+    var key=K[b];
+    var local=load(key,[]);var remote=payload.data[b]||[];
+    var merged=mergeBucket(local,remote,remoteTomb[b]||{},localTomb[b]||{});
+    var newTomb=mergeTomb(localTomb[b]||{},remoteTomb[b]||{});
+    if(JSON.stringify(merged)!==JSON.stringify(local)){save(key,merged);changed=true;}
+    if(Object.keys(newTomb).length&&JSON.stringify(newTomb)!==JSON.stringify(localTomb[b]||{})){localTomb[b]=newTomb;save(K_TOMB,localTomb);changed=true;}
+  });
+  Sync._applying=false;
+  if(changed){try{render[currentRoute]();}catch(e){}Sync.log('已合并对端数据并刷新');}
+}
+Sync.schedulePush=function(){
+  if(!this.connected||!this.dc)return;var self=this;
+  if(this._timer)clearTimeout(this._timer);
+  this._timer=setTimeout(function(){self.doPush();},400);
+};
+Sync.doPush=function(){
+  if(!this.dc||this.dc.readyState!=='open')return;
+  try{this.dc.send(JSON.stringify(syncSnapshot()));this.log('已推送本地变更');}catch(e){}
+};
+Sync.createRoom=function(){
+  if(!Sync.ready){alert('当前浏览器不支持 WebRTC 同步（需在 https 或 localhost 下，或用较新版手机/电脑浏览器）。可继续用 JSON 导出/导入备份。');return;}
+  try{
+    Sync.role='host';Sync.key=randKey();
+    var pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
+    Sync.pc=pc;
+    var dc=pc.createDataChannel('lifehub-sync');setupDc(dc);
+    pc.createOffer().then(function(o){return pc.setLocalDescription(o);})
+      .then(function(){return waitIce(pc);})
+      .then(function(){return aesEncrypt({type:'offer',sdp:pc.localDescription},Sync.key);})
+      .then(function(code){Sync.showInvite(code);Sync.log('房间已创建，等待对端加入…');})
+      .catch(function(e){Sync.log('创建房间失败：'+(e&&e.message||e));});
+  }catch(e){Sync.log('创建房间失败：'+(e&&e.message||e));}
+};
+Sync.joinRoom=function(key,offerCode){
+  if(!Sync.ready){alert('当前浏览器不支持 WebRTC 同步。');return;}
+  if(!key||!offerCode){alert('请填写会话密钥与邀请码');return;}
+  try{
+    Sync.role='guest';Sync.key=key;
+    var pc=new RTCPeerConnection({iceServers:[{urls:'stun:stun.l.google.com:19302'}]});
+    Sync.pc=pc;
+    pc.ondatachannel=function(e){setupDc(e.channel);};
+    aesDecrypt(offerCode,key).then(function(obj){
+      if(!obj||obj.type!=='offer')throw new Error('邀请码无效');
+      return pc.setRemoteDescription(obj.sdp).then(function(){return pc.createAnswer();})
+        .then(function(a){return pc.setLocalDescription(a);})
+        .then(function(){return waitIce(pc);})
+        .then(function(){return aesEncrypt({type:'answer',sdp:pc.localDescription},key);})
+        .then(function(code){Sync.showAnswer(code);Sync.log('应答码已生成，发回房主完成连接');});
+    }).catch(function(e){Sync.log('加入失败：'+(e&&e.message||e));alert('加入失败：'+(e&&e.message||e));});
+  }catch(e){Sync.log('加入失败：'+(e&&e.message||e));alert('加入失败：'+(e&&e.message||e));}
+};
+Sync.complete=function(answerCode){
+  if(!Sync.pc){alert('请先「创建房间」');return;}
+  aesDecrypt(answerCode,Sync.key).then(function(obj){
+    if(!obj||obj.type!=='answer')throw new Error('应答码无效');
+    return Sync.pc.setRemoteDescription(obj.sdp);
+  }).then(function(){Sync.log('已设置应答，等待通道连接…');closeModal();})
+  .catch(function(e){Sync.log('完成连接失败：'+(e&&e.message||e));alert('完成连接失败：'+(e&&e.message||e));});
+};
+Sync.showInvite=function(code){
+  showModal('🔄 邀请对端加入',
+    '<p class="muted">把下面两样发给另一台设备（微信 / 邮件任意方式）：</p>'+
+    '<div class="field"><label>① 会话密钥（对端加入时需输入）</label><div class="code-box" id="m-key" style="min-height:auto">'+esc(Sync.key)+'</div></div>'+
+    '<div class="field"><label>② 邀请码（对端粘贴到「加入房间」）</label><textarea class="code-box" id="m-offer" readonly>'+esc(code)+'</textarea></div>'+
+    '<div class="muted" style="font-size:12px">对端加入后会生成「应答码」，回到此处点「完成连接」粘贴即可建立同步。</div>',
+    '<button class="btn ghost" data-act="copy" data-copy="m-key">复制密钥</button>'+
+    '<button class="btn ghost" data-act="copy" data-copy="m-offer">复制邀请码</button>'+
+    '<button class="btn" data-act="sync-complete-open">完成连接</button>');
+};
+Sync.showAnswer=function(code){
+  showModal('🔑 应答码已生成',
+    '<p class="muted">把下面「应答码」发回房主：</p>'+
+    '<textarea class="code-box" id="m-answer" readonly>'+esc(code)+'</textarea>'+
+    '<div class="muted" style="font-size:12px">房主在「完成连接」里粘贴此码后即建立同步，之后数据自动双向实时合并。</div>',
+    '<button class="btn ghost" data-act="copy" data-copy="m-answer">复制应答码</button>'+
+    '<button class="btn" data-act="modal-close">完成</button>');
+};
+Sync.refreshSyncUI=function(){if(currentRoute==='settings'){try{render.settings();}catch(e){}}};
 
 /* ---------- 启动 ---------- */
 seed();
